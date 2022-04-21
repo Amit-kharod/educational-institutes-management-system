@@ -12,6 +12,7 @@ const req = require('express/lib/request');
 // @route   POST api/students
 // @desc    Register a Student
 // @access  Public
+
 router.post(
   '/',
   [
@@ -83,7 +84,6 @@ router.post(
           res.json({ token });
         }
       );
-
     } catch (err) {
       if (err instanceof MongoServerError && err.code === 11000) {
         return res.status(400).send('Student already registered');
