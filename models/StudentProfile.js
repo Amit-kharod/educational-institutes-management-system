@@ -6,12 +6,16 @@ const StudentProfileSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'student',
   },
-  rollNum: {
+  roll_no: {
     type: Number,
     required: true,
   },
-  class: {
-    type: mongoose.Schema.Types.ObjectId,
+  course: {
+    type: String,
+    required: true,
+  },
+  sem: {
+    type: Number,
     required: true,
   },
 });

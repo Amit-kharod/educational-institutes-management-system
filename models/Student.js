@@ -22,6 +22,11 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  secretCode: {
+    type: String,
+    required: true,
+    unique: true,
+  },
 });
 
 module.exports = mongoose.model('student', StudentSchema);
