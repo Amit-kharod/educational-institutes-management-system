@@ -7,6 +7,7 @@ const SubjectSchema = mongoose.Schema({
   },
   programme: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'programme',
   },
   topics: {
     type: [String],

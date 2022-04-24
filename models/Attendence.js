@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const AttendenceSchema = mongoose.Schema({
   subject: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'subject',
     required: true,
   },
   date: {
@@ -12,7 +13,11 @@ const AttendenceSchema = mongoose.Schema({
   attendence: {
     type: [
       {
-        student: { type: mongoose.Schema.Types.ObjectId, required: true },
+        student: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'student',
+          required: true,
+        },
         isPresent: {
           type: Boolean,
           required: true,

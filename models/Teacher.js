@@ -15,6 +15,7 @@ const TeacherSchema = mongoose.Schema({
   },
   subject: {
     type: [mongoose.Schema.Types.ObjectId],
+    ref: 'subject',
     required: true,
   },
   schedule: {

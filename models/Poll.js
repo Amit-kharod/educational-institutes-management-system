@@ -11,6 +11,7 @@ const PollSchema = mongoose.Schema({
   },
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'teacher',
     required: true,
   },
   time: {
