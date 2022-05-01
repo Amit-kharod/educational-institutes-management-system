@@ -56,7 +56,7 @@ router.post(
         d: 'identicon',
       });
 
-      // Generate security code for new profile
+      // Generate secret code for new profile
       const secretCode = randomBytes(6).toString('hex');
 
       student = new Student({

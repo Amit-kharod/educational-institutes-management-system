@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import MainHead from './components/MainHead';
-import './app.css';
-import LoginBox from './components/LoginBox';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Fragment } from "react";
+import Navbar from "./components/homepage/Navbar";
+import "./app.css";
+import LoginBox from "./components/homepage/LoginBox";
+import SignupBox from "./components/homepage/SignupBox";
 
-function App() {
-  const [apiResponse, setResponse] = useState({ apiResponse: '' });
-
-  const callAPI = () => {
-    fetch('http://localhost:9000/testAPI')
-      .then(res => res.text())
-      .then(res => setResponse({ apiResponse: res }));
-  };
-
-  useEffect(() => {
-    callAPI();
-    console.log(apiResponse);
-  });
-
-  return (
-    <div className='App'>
-      <MainHead />
-      <LoginBox />
-    </div>
-  );
-}
+const App = () => (
+  <BrowserRouter>
+    <Navbar />
+    <Routes>
+      <Route exact path="/login" element={<LoginBox />} />
+      <Route exact path="/signup" element={<SignupBox />} />
+    </Routes>
+  </BrowserRouter>
+);
 
 export default App;
