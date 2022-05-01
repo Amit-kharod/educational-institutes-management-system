@@ -1,92 +1,153 @@
-.App {
+#nav-items {
   display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  justify-content: flex-start;
-  align-items: center;
+  list-style: none;
+  cursor: pointer;
 }
 
-.main-heading {
-  margin-top: 15vh;
-  font-size: 5.5vw;
+#home {
+  margin-right: 30px;
+}
+
+#log-in {
+  margin-left: auto;
+  margin-right: 20px;
+}
+.text-link {
+  color: inherit;
+  text-decoration: inherit;
+  background-color: inherit;
+}
+
+#sign-up {
+  margin-right: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  margin-top: 20vh;
+  justify-content: flex-start;
+  align-items: center;
+  font-family: 'Inter';
 }
 
 .login-box {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
-  width: 30%;
-  height: 55%;
-  margin-top: 20px;
-  border: solid 2px rgb(131, 131, 131);
-  border-radius: 25px;
 }
-.user-name,
-.password {
-  width: 80%;
-  height: 20%;
-}
-.user-name > input,
-.password > input {
-  width: 100%;
-  height: 60%;
+
+#user-name input,
+#password input,
+#name-dmc input,
+#registration-no input,
+#signup-email input,
+#signup-password input {
+  width: 325px;
+  height: 56px;
+  background-color: black;
   text-align: center;
   border: solid 1px rgb(131, 131, 131);
-  border-radius: 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
-.user-name > input::placeholder,
-.password > input::placeholder {
+#user-name input::placeholder,
+#password input::placeholder,
+#name-dmc input::placeholder,
+#registration-no input::placeholder,
+#signup-email input::placeholder,
+#signup-password input::placeholder {
   font-size: 1.3em;
 }
 
-.user-name > input {
-  position: relative;
-  top: 10%;
-}
-
-.password > input {
-  position: relative;
-  bottom: 40%;
-}
-
-.login-button {
+.big-blue-btn,
+.big-purple-btn {
   display: flex;
   position: relative;
   bottom: 15%;
   justify-content: center;
   align-items: center;
   background-color: #68a1d7;
-  width: 35%;
-  height: 12%;
-  border-radius: 10px;
+  width: 330px;
+  height: 56px;
+  border-radius: 4px;
   font-size: 1.5rem;
   font-weight: 900;
   cursor: pointer;
 }
 
-.login-button:active {
+.big-blue-btn:hover {
+  background-color: #67aff3;
+}
+
+.big-blue-btn:active {
   background-color: #3a8dda;
+}
+
+.big-purple-btn {
+  background-color: #7e68d7;
+}
+.big-purple-btn:hover {
+  background-color: #8975db;
+}
+
+.big-purple-btn:active {
+  background-color: #654bca;
 }
 
 #login-text {
   background: none;
 }
 
-.sign-up {
-  position: relative;
-  bottom: 15%;
-  font-size: 1.2em;
+.forgot-pass {
+  align-self: flex-start;
 }
 
-.sign-up > span {
+.sign-up {
+  align-self: flex-start;
+}
+
+.inline-link span {
   cursor: pointer;
   color: #ff7e7e;
 }
 
-.sign-up > span:active {
-  color: aquamarine;
+.inline-link > span:active {
+  color: rgb(255, 255, 255);
+}
+
+.purple-btn,
+.blue-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #7e68d7;
+  width: 84px;
+  height: 40px;
+  border-radius: 4px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.blue-btn {
+  background-color: #68a1d7;
+}
+
+.blue-btn:hover {
+  background-color: #67aff3;
+}
+
+.blue-btn:active {
+  background-color: #3a8dda;
+}
+
+.purple-btn:hover {
+  background-color: #8975db;
+}
+
+.purple-btn:active {
+  background-color: #654bca;
 }
 
 @media (max-width: 500px) {
