@@ -8,6 +8,36 @@
   margin-right: 30px;
 }
 
+#alerts {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 300px;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.alert {
+  display: flex;
+  position: relative;
+  width: 300px;
+  height: 50px;
+  border-radius: 4px;
+  justify-content: center;
+  align-items: center;
+  margin: 30px;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+}
+
+.alert-danger {
+  background-color: #ff7e7e;
+}
+
+.alert-success {
+  background-color: #4fc255;
+}
+
 #log-in {
   margin-left: auto;
   margin-right: 20px;
@@ -43,21 +73,23 @@
 #name-dmc input,
 #registration-no input,
 #signup-email input,
-#signup-password input {
+#signup-password input,
+#signup-password-confirm input {
   width: 325px;
   height: 56px;
   background-color: black;
-  text-align: center;
   border: solid 1px rgb(131, 131, 131);
   border-radius: 4px;
   margin-bottom: 10px;
+  text-indent: 5px;
 }
 #user-name input::placeholder,
 #password input::placeholder,
 #name-dmc input::placeholder,
 #registration-no input::placeholder,
 #signup-email input::placeholder,
-#signup-password input::placeholder {
+#signup-password input::placeholder,
+#signup-password-confirm input::placeholder {
   font-size: 1.3em;
 }
 
@@ -167,5 +199,15 @@
     margin-top: 20px;
     border: solid 2px rgb(131, 131, 131);
     border-radius: 25px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
