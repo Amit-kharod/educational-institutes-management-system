@@ -1,7 +1,13 @@
 const express = require('express');
 const connectDB = require('./config/mongodb');
+const cors = require('cors');
 
 const app = express();
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 
 // Connecting MongoDB
 connectDB();
@@ -18,7 +24,6 @@ app.use('/api/studentProfile', require('./routes/api/studentProfile'));
 app.use('/api/students', require('./routes/api/students'));
 app.use('/api/syllabus', require('./routes/api/syllabus'));
 app.use('/api/teacher', require('./routes/api/teacher'));
-
 
 const port = process.env.PORT || 5000;
 

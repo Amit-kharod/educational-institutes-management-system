@@ -20,7 +20,7 @@ router.post(
   [
     check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please enter valid email').isEmail(),
-    check('registration_no', 'Enter a valid Registration Number')
+    check('registrationNo', 'Enter a valid Registration Number')
       .not()
       .isEmpty()
       .isLength({ min: 10, max: 10 }),
@@ -38,11 +38,11 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, email, registration_no, password } = req.body;
+    const { name, email, registrationNo, password } = req.body;
 
     try {
       // See if student exists
-      let student = await Student.findOne({ registration_no });
+      let student = await Student.findOne({ registrationNo });
 
       if (student) {
         return res
@@ -58,16 +58,15 @@ router.post(
 
       // Generate secret code for new profile
       const secretCode = randomBytes(6).toString('hex');
-
+      console.log(secretCode)
       student = new Student({
         name,
         email,
-        registration_no,
+        registrationNo,
         avatar,
         password,
         secretCode,
       });
-
       // Encrypt password
       const salt = await bcrypt.genSalt(10);
       student.password = await bcrypt.hash(password, salt);
@@ -92,7 +91,8 @@ router.post(
       );
     } catch (err) {
       if (err instanceof MongoServerError && err.code === 11000) {
-        return res.status(400).send('Student already registered');
+        return res.status(400)
+        .json({ errors: [{ msg: 'Student already exits' }] });
       }
       console.log(err.toString());
       res.status(500).send('Server error');

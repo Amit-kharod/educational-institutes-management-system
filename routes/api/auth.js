@@ -28,7 +28,7 @@ router.get('/', auth, async (req, res) => {
 router.post(
   '/',
   [
-    check('registration_no', 'Enter a valid Registration Number')
+    check('registrationNo', 'Enter a valid Registration Number')
       .not()
       .isEmpty()
       .isLength({ min: 10, max: 10 }),
@@ -44,10 +44,10 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { registration_no, password } = req.body;
+    const { registrationNo, password } = req.body;
     try {
       // See if student exists
-      let student = await Student.findOne({ registration_no });
+      let student = await Student.findOne({ registrationNo });
 
       if (!student) {
         return res
@@ -95,7 +95,7 @@ router.post(
 router.post(
   '/secretCode',
   [
-    check('registration_no', 'Invalid Credentials')
+    check('registrationNo', 'Invalid Credentials')
       .not()
       .isEmpty()
       .isLength({ min: 10, max: 10 }),
@@ -108,10 +108,10 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { registration_no, secretCode } = req.body;
+    const { registrationNo, secretCode } = req.body;
     try {
       // See if student exists
-      let student = await Student.findOne({ registration_no });
+      let student = await Student.findOne({ registrationNo });
 
       if (!student) {
         return res

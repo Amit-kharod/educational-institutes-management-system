@@ -10,7 +10,7 @@ const StudentSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  registration_no: {
+  registrationNo: {
     type: String,
     required: true,
     unique: true,
