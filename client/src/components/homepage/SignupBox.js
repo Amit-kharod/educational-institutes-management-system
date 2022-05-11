@@ -45,7 +45,7 @@ const SignupBox = ({ setAlert, register, isAuthenticated }) => {
   };
 
   if (isAuthenticated) {
-    return <Navigate to="/student-dashboard"/>
+    return <Navigate to="/studentDashboard"/>
   }
 
   return (

@@ -6,6 +6,7 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
+  LOGOUT
 } from './types';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
@@ -16,7 +17,7 @@ export const loadStudent = () => async (dispatch) => {
     setAuthToken(localStorage.token);
     try {
       const res = await axios.get('/api/auth');
-  
+      console.log('hi')
       dispatch({
         type: STUDENT_LOADED,
         payload: res.data,
@@ -87,3 +88,10 @@ export const login = (registrationNo, password) => async (dispatch) => {
     });
   }
 };
+
+// Logout / Clear Profile
+export const logout = () => dispatch => {
+  dispatch({
+    type: LOGOUT
+  })
+}
