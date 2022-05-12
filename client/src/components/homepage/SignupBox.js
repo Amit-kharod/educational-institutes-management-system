@@ -6,7 +6,7 @@ import { register } from '../../actions/auth';
 import { validate } from 'email-validator';
 import PropTypes from 'prop-types';
 
-const SignupBox = ({ setAlert, register, isAuthenticated }) => {
+const SignupBox = ({ setAlert, register, isAuthenticated, student }) => {
   const [formData, setFormData] = useState({
     name: '',
     registrationNo: '',
@@ -44,7 +44,7 @@ const SignupBox = ({ setAlert, register, isAuthenticated }) => {
     } else setAlert('Enter a valid Name', 'danger');
   };
 
-  if (isAuthenticated) {
+  if (isAuthenticated && student) {
     return <Navigate to="/studentDashboard"/>
   }
 
@@ -118,10 +118,12 @@ SignupBox.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  student: PropTypes.object
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  student: state.auth.student
 });
 
 export default connect(mapStateToProps, { setAlert, register })(SignupBox);

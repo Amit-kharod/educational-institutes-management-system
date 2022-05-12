@@ -27,6 +27,10 @@ const StudentSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  verification: {
+    type: Boolean,
+    required: true
+  }
 });
 
 module.exports = mongoose.model('student', StudentSchema);

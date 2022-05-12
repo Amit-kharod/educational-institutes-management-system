@@ -3,14 +3,13 @@ const config = require('config');
 module.exports = function (req, res, next) {
   // Get ip address from header
   const ipAddress = req.header('ip-address');
-
   try {
-    const isAdmin = ipAddress == config.get('adminIP');
+    const isAdmin = config.get('adminIP').includes(ipAddress);
     if (isAdmin) {
       req.admin = true;
       next();
     } else {
-      return res.json({ msg: 'no access' });
+      return res.send(false);
     }
   } catch (err) {
     res.status(401).josn({ msg: 'Token is not valid' });

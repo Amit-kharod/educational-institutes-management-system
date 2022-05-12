@@ -8,7 +8,9 @@
 #home {
   margin-right: 30px;
 }
-
+#admin {
+  margin-left: 30px;
+}
 #log-in {
   margin-left: auto;
   margin-right: 20px;
@@ -19,19 +21,26 @@
   background-color: inherit;
 }
 
-#sign-up {
-  margin-right: 20px;
-}
+
 /* Student Navbar items */
-#st-dashboard {
+#sign-up, #st-dashboard {
   margin-right: 20px;
 }
+
 #poll {
   margin-left: auto;
 }
 #profile {
   margin-left: 20px;
   margin-right: 20px;
+}
+
+/* Admin Navbar items */
+#teachers, #students, #departments {
+  margin-left: 20px;
+}
+#admin-logout {
+  margin-left: auto;
 }
 /* Alerts */
 #alerts {
@@ -291,6 +300,26 @@
 .feature span {
   color: #49EB94;
 }
+
+/* Admin page */
+#admin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+#statistics {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#admin-container button {
+  margin-top: inherit;
+}
+#admin-container img {
+  width: 30px;
+  background-color: inherit;
+}
 /* common styles */
 .big-blue-btn,
 .big-purple-btn {
@@ -381,6 +410,29 @@
   background-color: #654bca;
 }
 
+.medium-blue-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #7e68d7;
+  width: 180px;
+  height: 40px;
+  border-radius: 4px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.medium-blue-btn {
+  background-color: #68a1d7;
+}
+
+.medium-blue-btn:hover {
+  background-color: #67aff3;
+}
+
+.medium-blue-btn:active {
+  background-color: #3a8dda;
+}
 .heading-red {
   font-size: 1.5em;
   font-weight: 700;
