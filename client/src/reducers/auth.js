@@ -6,6 +6,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
+  CHECK_ADMIN,
+  ADMIN_LOGIN
 } from '../actions/types';
 
 const initialState = {
@@ -13,7 +15,10 @@ const initialState = {
   isAuthenticated: null,
   loading: false,
   student: null,
+  teacher: null,
+  admin: null,
   firstLogin: false,
+  isAdmin:false,
 };
 
 export default function (state = initialState, action) {
@@ -51,13 +56,29 @@ export default function (state = initialState, action) {
     case LOGOUT:
       localStorage.removeItem('token');
       localStorage.removeItem('http://amitkharod.com:state');
+      localStorage.removeItem('adminToken');
       return {
         ...state,
         token: null,
         isAuthenticated: false,
         loading: false,
         firstLogin: false,
+        student: null,
+        admin: null,
+        teacher: null,
       };
+    case CHECK_ADMIN:
+      return {
+        ...state,
+        isAdmin: payload
+      }
+    case ADMIN_LOGIN:
+      localStorage.setItem('adminToken', payload.token);
+      return {
+        ...state,
+        admin: payload,
+        isAuthenticated: true,
+      }
     default:
       return state;
   }

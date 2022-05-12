@@ -6,7 +6,9 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
-  LOGOUT
+  LOGOUT,
+  CHECK_ADMIN,
+  ADMIN_LOGIN,
 } from './types';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
@@ -17,7 +19,7 @@ export const loadStudent = () => async (dispatch) => {
     setAuthToken(localStorage.token);
     try {
       const res = await axios.get('/api/auth');
-      console.log('hi')
+      console.log('hi');
       dispatch({
         type: STUDENT_LOADED,
         payload: res.data,
@@ -90,8 +92,53 @@ export const login = (registrationNo, password) => async (dispatch) => {
 };
 
 // Logout / Clear Profile
-export const logout = () => dispatch => {
+export const logout = () => (dispatch) => {
   dispatch({
-    type: LOGOUT
-  })
-}
+    type: LOGOUT,
+  });
+};
+
+// Admin login
+export const adminLogin = (id, password) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const body = JSON.stringify({ id, password });
+  try {
+    const res = await axios.post('/api/admin', body, config);
+    console.log(res);
+    dispatch({
+      type: ADMIN_LOGIN,
+      payload: res.data,
+    });
+  } catch (err) {
+    console.log(err);
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+    dispatch({
+      type: LOGIN_FAILED,
+    });
+  }
+};
+
+// Get User IP address
+
+export const getIP = () => async (dispatch) => {
+  const res = await axios.get('https://geolocation-db.com/json/');
+  const config = {
+    headers: {
+      'ip-address': res.data.IPv4,
+    },
+  };
+  const res2 = await axios.get('/api/admin/verify', config);
+  dispatch({
+    type: CHECK_ADMIN,
+    payload: res2.data,
+  });
+};
+

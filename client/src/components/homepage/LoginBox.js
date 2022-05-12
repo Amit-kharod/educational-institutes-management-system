@@ -5,7 +5,7 @@ import { setAlert } from '../../actions/alert';
 import { login } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
-const LoginBox = ({ setAlert, login, isAuthenticated }) => {
+const LoginBox = ({ setAlert, login, isAuthenticated, student }) => {
   const [formData, setFormData] = useState({
     registrationNo: '',
     password: '',
@@ -30,7 +30,7 @@ const LoginBox = ({ setAlert, login, isAuthenticated }) => {
     } else setAlert('Enter a valid Registration No', 'danger');
   };
 
-  if (isAuthenticated) {
+  if (isAuthenticated && student) {
     return <Navigate to="/studentDashboard"/>
   }
 
@@ -82,11 +82,13 @@ const LoginBox = ({ setAlert, login, isAuthenticated }) => {
 LoginBox.propTypes = {
   setAlert: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  student: PropTypes.object
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  student: state.auth.student
 })
 
 export default connect(mapStateToProps, { login, setAlert })(LoginBox);

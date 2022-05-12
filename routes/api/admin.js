@@ -14,7 +14,7 @@ const { MongoServerError } = require('mongodb');
 // @access  Private
 router.get('/verify', adminAuth, (req, res) => {
   if (req.admin) {
-    res.json({ msg: 'Admin verified' });
+    res.send(true)
   }
 });
 
@@ -24,9 +24,8 @@ router.get('/verify', adminAuth, (req, res) => {
 router.post(
   '/',
   [
-    adminAuth,
     [
-      check('adminID', 'Admin ID is required').not().isEmpty(),
+      check('id', 'Admin ID is required').not().isEmpty(),
       check('password', 'Password is required').exists(),
     ],
   ],
@@ -41,7 +40,6 @@ router.post(
     try {
       let admin = await Admin.findOne({ adminID: 'admin' });
       if (!admin) {
-        console.log('a')
         const password = randomBytes(4).toString('hex');
         const salt = await bcrypt.genSalt(10);
         const adminPassword = await bcrypt.hash(password, salt);
