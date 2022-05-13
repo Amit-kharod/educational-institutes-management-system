@@ -11,7 +11,6 @@ const PollSchema = mongoose.Schema({
   },
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'teacher',
     required: true,
   },
   time: {
@@ -19,7 +18,12 @@ const PollSchema = mongoose.Schema({
     required: true,
   },
   reuslt: {
-    type: Number,
+    type: [
+      {
+        option: String,
+        percentage: Number,
+      },
+    ],
   },
 });
 

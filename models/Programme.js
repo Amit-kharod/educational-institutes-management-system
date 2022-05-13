@@ -6,19 +6,11 @@ const ProgrammeSchema = mongoose.Schema({
     required: true,
   },
   department: {
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'department',
   },
   duration: {
     type: Number,
-    required: true,
-  },
-  sem: {
-    type: Number,
-    required: true,
-  },
-  fee: {
-    type: number,
     required: true,
   },
 });
