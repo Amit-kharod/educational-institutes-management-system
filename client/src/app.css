@@ -21,9 +21,9 @@
   background-color: inherit;
 }
 
-
 /* Student Navbar items */
-#sign-up, #st-dashboard {
+#sign-up,
+#st-dashboard {
   margin-right: 20px;
 }
 
@@ -36,7 +36,9 @@
 }
 
 /* Admin Navbar items */
-#teachers, #students, #departments {
+#teachers,
+#students,
+#departments {
   margin-left: 20px;
 }
 #admin-logout {
@@ -79,7 +81,7 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -105,14 +107,14 @@
   background-color: rgb(27, 27, 27);
   cursor: pointer;
 }
-.popup-close img{
-  width: 20px;
+.popup-close img {
+  width: 10px;
 }
 #popup-code {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1.3em;
   font-weight: 700;
-  color: #FF8B8B;
+  color: #ff8b8b;
 }
 #secret-code {
   display: flex;
@@ -204,7 +206,7 @@
   margin-bottom: 20px;
 }
 #developer img {
-  width: 200px;
+  max-width: 200px;
   border-radius: 100%;
   margin-right: 20px;
 }
@@ -216,12 +218,12 @@
 }
 #links {
   display: grid;
-  width: 300px;
+  max-width: 300px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 2fr;
 }
-#imp-link{
-  grid-column: 1/ span 2;
+#imp-link {
+  grid-column: 1 / span 2;
   align-self: center;
   justify-self: center;
 }
@@ -243,13 +245,13 @@
   height: 800px;
   justify-content: center;
 }
-#tech-imgs img{
+#tech-imgs img {
   width: 200px;
 }
 #tech-imgs {
   display: grid;
-  grid-template-columns: repeat(3,auto);
-  column-gap:2rem;
+  grid-template-columns: repeat(3, auto);
+  column-gap: 2rem;
 }
 /* homepage */
 #homepage {
@@ -262,17 +264,17 @@
   grid-template-rows: 1fr 2fr;
 }
 #project-name {
-  grid-row:1 / span 2;
+  grid-row: 1 / span 2;
   font-size: 9em;
-  font-weight:900;
+  font-weight: 900;
 }
 .eims {
-  color: #FFCACA;
+  color: #ffcaca;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.1em;
 }
 .eims span {
-  color: #FF7777;
+  color: #ff7777;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 #headline {
@@ -298,7 +300,7 @@
   margin-top: 10px;
 }
 .feature span {
-  color: #49EB94;
+  color: #49eb94;
 }
 
 /* Admin page */
@@ -319,6 +321,120 @@
 #admin-container img {
   width: 30px;
   background-color: inherit;
+}
+
+/* Admin Popups */
+.big-popup-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 32px;
+  width: 100%;
+  height: 50vh;
+  max-width: 640px;
+  background-color: rgb(27, 27, 27);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.4em;
+}
+.popup-center {
+  justify-content: center;
+}
+.big-popup-inner * {
+  background-color: inherit;
+}
+.big-popup-inner strong {
+  font-size: 0.8em;
+}
+.big-popup-inner em {
+  font-size: 0.5em;
+}
+.big-popup-inner label {
+  font-size: 0.6em;
+  margin-right: 10px;
+}
+/* Department Popup */
+#departmentName {
+  width: 300px;
+  height: 35px;
+  background-color: black;
+  border: solid 1px rgb(131, 131, 131);
+  border-radius: 4px;
+  margin-top: 10px;
+  text-indent: 5px;
+}
+#departmentName::placeholder {
+  font-size: 1.2em;
+}
+.next-popup {
+  position: absolute;
+  bottom: 50px;
+  right: 60px;
+  background-color: #f76363;
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+  border: none;
+  font-size: 0.75em;
+  border-radius: 2px;
+}
+.next-popup:hover {
+  background-color: #ff7b7b;
+}
+.next-popup:active {
+  background-color: #e74343;
+}
+.next-subject {
+  right: 150px;
+  width: 150px;
+}
+/* Programme Popup */
+#programme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(3, auto);
+  row-gap: 0.5em;
+  column-gap: 3em;
+}
+#programme-grid input {
+  width: 150px;
+  height: 30px;
+  background-color: black;
+  border: solid 1px rgb(131, 131, 131);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  text-indent: 5px;
+}
+#programme-grid button {
+  width: 60px;
+  height: 30px;
+  cursor: pointer;
+  border: none;
+  font-size: 0.7em;
+  border-radius: 2px;
+}
+#add-programme-btn button:hover {
+  background-color: #ff7b7b;
+}
+#add-programme-btn button:active {
+  background-color: #e74343;
+}
+.sem-btn {
+  background-color: #777777;
+}
+.sem-btn-active {
+  background-color: #48b9e6;
+}
+#add-programme-btn {
+grid-column: 1/span 2;
+justify-self: center;
+}
+#add-programme-btn button {
+  background-color: #f76363;
+}
+#duration input {
+  width: 30px;
 }
 /* common styles */
 .big-blue-btn,
@@ -436,7 +552,7 @@
 .heading-red {
   font-size: 1.5em;
   font-weight: 700;
-  color: #FF8B8B;
+  color: #ff8b8b;
 }
 
 .heading-white {

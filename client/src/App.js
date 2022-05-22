@@ -5,17 +5,19 @@ import Navbar from './components/homepage/Navbar';
 import './app.css';
 import LoginBox from './components/homepage/LoginBox';
 import SignupBox from './components/homepage/SignupBox';
+import AboutPage from './components/homepage/AboutPage';
+import HomePage from './components/homepage/HomePage';
+import StudentDashboard from './components/student/StudentDashboard';
+import Admin from './components/homepage/Admin';
+import AdminDashboard from './components/admin/AdminDashboard';
+import Departments from './components/admin/Departments';
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
 import Alert from './components/layout/Alert';
 import { loadStudent, getIP } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
-import AboutPage from './components/homepage/AboutPage';
-import HomePage from './components/homepage/HomePage';
-import StudentDashboard from './components/student/StudentDashboard';
-import Admin from './components/homepage/Admin';
-import AdminDashboard from './components/admin/AdminDashboard';
+import { setDepartmentData } from './actions/data';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -24,7 +26,7 @@ if (localStorage.token) {
 const App = () => {
   useEffect(() => {
     store.dispatch(loadStudent());
-    console.log('hi')
+    store.dispatch(setDepartmentData());
   }, []);
   console.log(store.getState());
   store.dispatch(getIP())
@@ -40,6 +42,7 @@ const App = () => {
           <Route exact path="/admin" element={<Admin/>} />
           <Route exact path="/studentDashboard" element={<StudentDashboard />} />
           <Route exact path="/adminDashboard" element={<AdminDashboard />} />
+          <Route exact path="/departments" element={<Departments />} />
         </Routes>
         <Alert />
       </BrowserRouter>

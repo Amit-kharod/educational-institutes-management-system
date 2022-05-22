@@ -21,7 +21,7 @@ const SignupBox = ({ setAlert, register, isAuthenticated, student }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = () => {
-    const isNameValid = /^[a-zA-Z]+$/.test(name);
+    const isNameValid = /^[a-z A-Z]+$/.test(name);
     const isRegistrationValid = registrationNo.length === 10;
     const isEmailValid = validate(email);
     const isPasswordValid = password.length >= 6;
