@@ -24,10 +24,16 @@ const Navbar = ({
 
   const adminLinks = (
     <Fragment>
-      <li id="admin-dashboard">Dashboard</li>
-      <li id="teachers">Teachers</li>
-      <li id="students">Students</li>
-      <li id="departments">Departments</li>
+      <li id="admin-dashboard">
+        <Link className="text-link" to="/adminDashboard">
+          Dashboard
+        </Link>
+      </li>
+      <li id="departments">
+        <Link className="text-link" to="/departments">
+          Departments
+        </Link>
+      </li>
       <li id="admin-logout">
         <Link onClick={logout} className="text-link purple-btn" to="/">
           Log Out

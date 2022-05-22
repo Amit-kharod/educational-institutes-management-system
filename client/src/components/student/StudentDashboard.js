@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const StudentDashboard = ({ student, isFirstLogin }) => {
   console.log(student);
-  const [buttonPopup, setButtonPopup] = useState('true');
+  const [buttonPopup, setButtonPopup] = useState(true);
   const { name, secretCode } = student;
   const [studentData, setStudentData] = useState({
     name: name,
