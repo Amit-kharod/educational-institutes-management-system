@@ -6,10 +6,10 @@ const DepartmentSchema = mongoose.Schema({
     required: true,
   },
   programme: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'programme' }],
+    type: [{ type: String }],
   },
   teacher: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'teacher' }],
+    type: [{ type: String }],
   },
 });
 

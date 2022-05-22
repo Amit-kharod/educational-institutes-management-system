@@ -2,21 +2,18 @@ const mongoose = require('mongoose');
 
 const ClassSchema = mongoose.Schema({
   programme: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'programme',
+    type: String,
+    required: true,
   },
   sem: {
     type: Number,
     required: true,
   },
-  teacher: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'teacher' }],
-  },
   student: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'student' }],
   },
   subject: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'subject' }],
+    type: [{ type: String }],
   },
   poll: {
     type: mongoose.Schema.Types.ObjectId,

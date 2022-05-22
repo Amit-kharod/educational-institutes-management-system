@@ -18,10 +18,6 @@ const TeacherSchema = mongoose.Schema({
     ref: 'subject',
     required: true,
   },
-  schedule: {
-    type: [String],
-    required: true,
-  },
 });
 
 module.exports = mongoose.model('teacher', TeacherSchema);

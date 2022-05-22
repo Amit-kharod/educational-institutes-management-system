@@ -5,10 +5,6 @@ const SubjectSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  class: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'class',
-  },
   lecture: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'lecture' }],
   },

@@ -16,4 +16,4 @@ const AssignmentSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('test', AssignmentSchema);
+module.exports = mongoose.model('assignment', AssignmentSchema);
