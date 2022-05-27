@@ -30,7 +30,7 @@ app.use('/api/department', require('./routes/api/department'));
 app.use('/api/lecture', require('./routes/api/lecture'));
 app.use('/api/programme', require('./routes/api/programme'));
 app.use('/api/subject', require('./routes/api/subject'));
-app.use('/api/test', require('./routes/api/test'));
+app.use('/api/data', require('./routes/api/data'));
 
 const port = process.env.PORT || 5000;
 

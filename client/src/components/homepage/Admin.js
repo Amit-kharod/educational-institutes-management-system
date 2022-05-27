@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setAlert } from '../../actions/alert';
 import { adminLogin } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
-const Admin = ({ isAuthenticated, admin, setAlert, adminLogin }) => {
+const Admin = ({ setState, isAuthenticated, admin, setAlert, adminLogin }) => {
   const [formData, setFormData] = useState({
     id: '',
     password: '',
@@ -16,10 +16,11 @@ const Admin = ({ isAuthenticated, admin, setAlert, adminLogin }) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     adminLogin(id, password);
   };
   if (isAuthenticated && admin.token) {
+    setState(true);
     return <Navigate to="/adminDashboard"/>
   }
   return (

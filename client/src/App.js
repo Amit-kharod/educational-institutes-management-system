@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Fragment } from 'react';
 import Navbar from './components/homepage/Navbar';
@@ -24,25 +24,47 @@ if (localStorage.token) {
 }
 
 const App = () => {
+  const [state, setState] = useState(null);
+  console.log(state);
   useEffect(() => {
     store.dispatch(loadStudent());
     store.dispatch(setDepartmentData());
+    console.log('hi');
   }, []);
-  console.log(store.getState());
-  store.dispatch(getIP())
+  const { auth } = store.getState();
+  store.dispatch(getIP());
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Navbar />
         <Routes>
+          {console.log(state)}
+          {auth.student && auth.isAuthenticated && (
+            <Route
+              exact
+              path="/studentDashboard"
+              element={<StudentDashboard trigger={true} />}
+            />
+          )}
+          {auth.isAdmin && (
+            <Fragment>
+              <Route
+                exact
+                path="/adminDashboard"
+                element={<AdminDashboard />}
+              />
+              <Route exact path="/departments" element={<Departments />} />
+            </Fragment>
+          )}
           <Route exact path="/" element={<HomePage />} />
-          <Route exact path="/login" element={<LoginBox />} />
+          <Route
+            exact
+            path="/login"
+            element={<LoginBox setState={setState} />}
+          />
           <Route exact path="/signup" element={<SignupBox />} />
           <Route exact path="/about" element={<AboutPage />} />
-          <Route exact path="/admin" element={<Admin/>} />
-          <Route exact path="/studentDashboard" element={<StudentDashboard />} />
-          <Route exact path="/adminDashboard" element={<AdminDashboard />} />
-          <Route exact path="/departments" element={<Departments />} />
+          <Route exact path="/admin" element={<Admin setState={setState} />} />
         </Routes>
         <Alert />
       </BrowserRouter>

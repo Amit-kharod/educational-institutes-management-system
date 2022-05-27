@@ -5,7 +5,7 @@ import { setAlert } from '../../actions/alert';
 import { login } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
-const LoginBox = ({ setAlert, login, isAuthenticated, student }) => {
+const LoginBox = ({ setState, setAlert, login, isAuthenticated, student }) => {
   const [formData, setFormData] = useState({
     registrationNo: '',
     password: '',
@@ -19,8 +19,6 @@ const LoginBox = ({ setAlert, login, isAuthenticated, student }) => {
   const onSubmit = () => {
     const isRegistrationValid = registrationNo.length === 10;
     const isPasswordValid = password.length >= 6;
-    console.log(isPasswordValid);
-    console.log(isRegistrationValid);
     if (isRegistrationValid) {
       if (!isPasswordValid) {
         setAlert('Enter a valid Password', 'danger');
@@ -31,6 +29,8 @@ const LoginBox = ({ setAlert, login, isAuthenticated, student }) => {
   };
 
   if (isAuthenticated && student) {
+    console.log('after');
+    setState(true);
     return <Navigate to="/studentDashboard"/>
   }
 

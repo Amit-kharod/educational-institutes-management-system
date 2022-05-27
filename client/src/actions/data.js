@@ -87,7 +87,7 @@ export const addProgramme = (fullName, shortForm, isOdd, duration, departmentNam
 
 // Get department data and set it to state
 export const setDepartmentData = () => async (dispatch) => {
-  const res = await axios.get('/api/department');
+  const res = await axios.get('/api/data');
   dispatch({
     type: SET_DEPARTMENT_DATA,
     payload: res.data.departments,
