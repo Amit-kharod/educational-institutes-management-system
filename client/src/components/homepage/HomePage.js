@@ -1,6 +1,12 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const HomePage = () => {
+const HomePage = ({ admin, isAdmin }) => {
+  if(admin && isAdmin){
+    return <Navigate to="/adminDashboard"/>
+  }
   return (
     <div id="homepage">
       <div id="project-name">
@@ -39,4 +45,14 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+HomePage.propTypes = {
+  admin: PropTypes.object,
+  isAdmin: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+  admin: state.auth.admin,
+  isAdmin: state.auth.isAdmin
+})
+
+export default connect(mapStateToProps)(HomePage);

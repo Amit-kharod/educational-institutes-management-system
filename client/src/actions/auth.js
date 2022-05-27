@@ -9,10 +9,6 @@ import {
   LOGOUT,
   CHECK_ADMIN,
   ADMIN_LOGIN,
-  ADD_DEPARTMENT,
-  ADD_PROGRAMME,
-  ADD_SUBJECT,
-  ADD_TEACHER
 } from './types';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
