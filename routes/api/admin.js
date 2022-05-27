@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const adminAuth = require('../../middleware/admin');
+const admin = require('../../middleware/admin');
+const adminAuth = require('../../middleware/adminAuth');
 const { check, validationResult } = require('express-validator');
 const Admin = require('../../models/Admin');
 const { randomBytes } = require('crypto');
@@ -11,10 +12,19 @@ const { MongoServerError } = require('mongodb');
 
 // @route   GET api/admin/verify
 // @desc    IP address verification of admin
-// @access  Private
-router.get('/verify', adminAuth, (req, res) => {
+// @access  Public
+router.get('/verify', admin, (req, res) => {
   if (req.admin) {
     res.send(true)
+  }
+});
+
+// @route   GET api/admin/verify
+// @desc    Token Verification for admin
+// @access  Public
+router.get('/', adminAuth, (req, res) => {
+  if (req.admin) {
+    res.status(200).json({ msg:'Token is valid' })
   }
 });
 

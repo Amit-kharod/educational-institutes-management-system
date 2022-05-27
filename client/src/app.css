@@ -322,7 +322,32 @@
   width: 30px;
   background-color: inherit;
 }
-
+/* Departments Page */
+.department-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.department {
+  display: flex;
+  align-items: center;
+  width: 30%;
+}
+.dep-serial {
+  justify-self: flex-start;
+}
+.dep-name {
+  margin-left: 10%;
+}
+.dep-action {
+  margin-left: auto;
+}
+.dep-action img {
+  width: 40px;
+}
+.dep-action span {
+  margin-bottom: 50px;
+}
 /* Admin Popups */
 .big-popup-inner {
   display: flex;
