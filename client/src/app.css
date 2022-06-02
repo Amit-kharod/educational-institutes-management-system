@@ -2,9 +2,10 @@
 #nav-items {
   display: flex;
   list-style: none;
+}
+#nav-items * {
   cursor: pointer;
 }
-
 #home {
   margin-right: 30px;
 }
@@ -341,12 +342,12 @@
 }
 .dep-action {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 .dep-action img {
   width: 40px;
-}
-.dep-action span {
-  margin-bottom: 50px;
 }
 /* Admin Popups */
 .big-popup-inner {

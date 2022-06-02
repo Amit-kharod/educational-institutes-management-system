@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 
 const ManageDataPopups = ({
   currentPopup,
+  currentModificationState,
   setPopup,
   setAlert,
   addDepartment,
@@ -18,6 +19,7 @@ const ManageDataPopups = ({
   resetDepartment,
 }) => {
   const { isDepartmentAdded, currentDepartment } = adminData;
+  const { department, programme, sem, subject, teacher } = currentModificationState;
   let popup = <Fragment></Fragment>;
   const [departmentData, setDepartmentData] = useState({
     name: '',
@@ -78,6 +80,35 @@ const ManageDataPopups = ({
           <img src="./img/icons/close.png" alt="close" />
         </button>
         Enter the name of the department
+        <br />
+        <input
+          id="departmentName"
+          type="text"
+          name="name"
+          placeholder="eg. Department of Biology"
+          value={name}
+          onChange={(e) => onDepartmentChange(e)}
+        />
+        <button className="next-popup" onClick={departmentNext}>
+          Next
+        </button>
+      </div>
+    </div>
+  );
+
+  const editDepartmentPopup = (
+    <div className="popup">
+      <div className="big-popup-inner popup-center">
+        <button
+          className="popup-close"
+          onClick={() => {
+            setPopup(null);
+            resetDepartment();
+          }}
+        >
+          <img src="./img/icons/close.png" alt="close" />
+        </button>
+        {department}
         <br />
         <input
           id="departmentName"
@@ -176,7 +207,6 @@ const ManageDataPopups = ({
       </div>
     </div>
   );
-
   const subjectPopup = (
     <div className="popup">
       <div className="big-popup-inner">
@@ -230,6 +260,9 @@ const ManageDataPopups = ({
     case 'addDepartment':
       popup = addDepartmentPopup;
       break;
+    case 'editDepartment':
+      popup = editDepartmentPopup;
+      break;
     case 'programme':
       popup = programmePopup;
       break;
@@ -249,9 +282,11 @@ ManageDataPopups.propTypes = {
   setAlert: PropTypes.func.isRequired,
   resetDepartment: PropTypes.func.isRequired,
   adminData: PropTypes.object,
+  data: PropTypes.array.isRequired
 };
 const mapStateToProps = (state) => ({
   adminData: state.auth.adminData,
+  data: state.data
 });
 
 export default connect(mapStateToProps, {
