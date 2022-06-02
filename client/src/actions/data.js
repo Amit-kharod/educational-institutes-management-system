@@ -59,6 +59,16 @@ export const resetDepartment = () => dispatch => {
     payload: false,
   })
 }
+
+// Modify a department
+export const modifyDepartment = (department) => dispatch => {
+  console.log(department)
+  dispatch({
+    type: MODIFY_DEPARTMENT,
+    payload: department,
+  })
+}
+
 // Add new Programme
 export const addProgramme = (fullName, shortForm, isOdd, duration, departmentName) => async (dispatch) => {
   if(localStorage.adminToken){
