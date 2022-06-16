@@ -104,3 +104,12 @@ export const setDepartmentData = () => async (dispatch) => {
     payload: res.data.departments,
   });
 };
+
+// Department which is currently being edited
+export const changeCurrentDepartment = (dep) => (dispatch)=> {
+  console.log(dep)
+  dispatch({
+    type: ADD_DEPARTMENT,
+    payload: dep
+  });
+}

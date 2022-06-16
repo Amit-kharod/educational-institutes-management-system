@@ -355,6 +355,9 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1.4em;
 }
+.large-popup {
+  
+}
 .popup-center {
   justify-content: center;
 }
@@ -363,9 +366,6 @@
 }
 .big-popup-inner strong {
   font-size: 0.8em;
-}
-.big-popup-inner em {
-  font-size: 0.5em;
 }
 .big-popup-inner label {
   font-size: 0.6em;
@@ -466,18 +466,29 @@ justify-self: center;
 #modify-dep :nth-child(2) {
   margin-left: 0px;
 }
-#programme-heading {
+.programme-heading {
   margin-top: 20px;
 }
 .programme-actions {
   display: flex;
-  width: 90%;
+  width: 100%;
   align-items: center;
   justify-content:space-between;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 .programme-actions label {
   margin-right: 0px;
+}
+.programme-short {
+  display: flex;
+  width: 70px;
+  font-weight: 600;
+}
+.programme-short *{
+  margin-right: 4px;
+}
+.no-programme {
+  font-size: 0.8rem;
 }
 .sem-radio-group {
   display: flex;
@@ -506,9 +517,10 @@ justify-self: center;
 }
 .actions {
   display: flex;
+  margin-left: auto;
 }
 .actions * {
-  margin-left:8px;
+  margin-left:4px;
 }
 #new-programme {
   margin-top: 20px;

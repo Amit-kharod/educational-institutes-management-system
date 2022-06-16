@@ -18,13 +18,15 @@ router.get('/', async (req, res) => {
     };
     const allDepartments = await Department.find({});
     const allClasses = await Class.find({});
+    console.log(allDepartments);
+    console.log(allClasses);
     allDepartments.map(async (item) => {
       let programmes = [];
-      let sem = [];
       item.programme.map((item2) => {
-        allClasses.find((o,i) => {
-          if(o.programme === item2) {
-            sem.push(o.sem);
+        let sem = [];
+        allClasses.find((programmeClass) => {
+          if(programmeClass.programme === item2) {
+            sem.push(programmeClass.sem);
           }
         })
         const programme = {name: item2, sem:sem}

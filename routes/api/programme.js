@@ -7,8 +7,8 @@ const { MongoServerError } = require('mongodb');
 const { check, validationResult } = require('express-validator');
 const adminAuth = require('../../middleware/adminAuth');
 
-// @route   POST api/department
-// @desc    Add new department
+// @route   POST api/programme
+// @desc    Add new Programme
 // @access  Private
 router.post(
   '/',
@@ -30,7 +30,6 @@ router.post(
         return res.status(400).json({ errors: errors.array() });
       }
       let { fullName, shortForm, isOdd, duration, departmentName } = req.body;
-      // Capitalizing first letter of each word
       fullName = fullName.toLowerCase();
       departmentName = departmentName.toLowerCase();
       shortForm = shortForm.toLowerCase();

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toTitleCase } from '../../utils/stringFunctions';
 import ManageDataPopups from './ManageDataPopups';
-import { modifyDepartment } from '../../actions/data';
+import { modifyDepartment, cha } from '../../actions/data';
 
 const Departments = ({ data, modifyDepartment }) => {
   const [currentPopup, setCurrentPopup] = useState(null);

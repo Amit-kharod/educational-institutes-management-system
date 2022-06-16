@@ -4,6 +4,7 @@ import {
   addDepartment,
   addProgramme,
   resetDepartment,
+  changeCurrentDepartment,
 } from '../../actions/data';
 import { toTitleCase, nToNth } from '../../utils/stringFunctions';
 import { setAlert } from '../../actions/alert';
@@ -16,6 +17,7 @@ const ManageDataPopups = ({
   setAlert,
   addDepartment,
   addProgramme,
+  changeCurrentDepartment,
   adminData,
   resetDepartment,
   data,
@@ -72,9 +74,71 @@ const ManageDataPopups = ({
     }
   };
 
-  const openProgrammePopup = () => {
+  // Fectch programmes details from department and render them
+  const programmeActionElement = data.map((item, i) => {
+    console.log(item.name);
+    let programmeArray = false;
+    if (toTitleCase(item.name) === department) {
+      programmeArray = [];
+      item.programmes.map((item2) => {
+        programmeArray.push({ name: item2.name, sem: item2.sem });
+      });
+      return (
+        <div id="programme-list" key={i}>
+          {programmeArray.map((item3, j) => {
+            {
+              let programmeName = item3.name;
+              return (
+                <div className="programme-actions" key={j}>
+                  <span className="programme-short">
+                    <span>{`${j + 1}.`}</span>
+                    <span>{programmeName.toUpperCase()}</span>
+                  </span>
+                  <div className="sem-radio-group">
+                    {item3.sem.map((sem, k) => {
+                      let semName = item3.sem[k];
+                      return (
+                        <div className="sem-radio" key={k}>
+                          <input
+                            type="radio"
+                            name={`sem${j}`}
+                            id={`${programmeName}${item3.sem[k]}`}
+                            defaultChecked={k == 0 ? 'checked' : ''}
+                          />
+                          <label htmlFor={`${programmeName}${item3.sem[k]}`}>
+                            {semName}
+                            {nToNth(semName)}
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="actions">
+                    <span className="action img-action">
+                      <img src="./img/icons/subject.png" alt="subject" />
+                      Subjects
+                    </span>
+                    <span className="action img-action">
+                      <img src="./img/icons/edit.png" alt="edit" /> Edit
+                    </span>
+                    <span className="action img-action">
+                      <img src="./img/icons/delete.png" alt="delete" />
+                      Delete
+                    </span>
+                  </div>
+                </div>
+              );
+            }
+          })}
+        </div>
+      );
+    }
+  });
+
+  const openProgrammePopup = (dep) => {
+    changeCurrentDepartment(dep);
     setPopup('programme');
-  }
+  };
   const addDepartmentPopup = (
     <div className="popup">
       <div className="big-popup-inner popup-center">
@@ -121,68 +185,17 @@ const ManageDataPopups = ({
             <img src="./img/icons/edit.png" alt="edit" />
             <span>Edit</span>
           </div>
-          <div id="programme-heading" className="heading-red-small">
-            Programmes
-          </div>
-          {data.map((item) => {
-            console.log(item.name);
-            let programmeArray = false;
-            if (toTitleCase(item.name) === department) {
-              programmeArray = [];
-              item.programmes.map((item2, i) => {
-                programmeArray.push({ name: item2.name, sem: item2.sem });
-              });
-            }
-            if (programmeArray) {
-              for (let i = 0; i < programmeArray.length; i++) {
-                let programmeName = programmeArray[i].name;
-                return (
-                  <div className="programme-actions" key={i}>
-                    <span>
-                      {`${i + 1}. `}
-                      {programmeName.toUpperCase()}
-                    </span>
-                    <div className="sem-radio-group">
-                      {programmeArray[i].sem.map((sem, j) => {
-                        let semName = programmeArray[i].sem[j];
-                        return (
-                          <div className="sem-radio" key={j}>
-                            <input
-                              type="radio"
-                              name="sem"
-                              id={`${programmeName}${programmeArray[i].sem[j]}`}
-                              defaultChecked={j == 0 ? 'checked' : ''}
-                            />
-                            <label
-                              htmlFor={`${programmeName}${programmeArray[i].sem[j]}`}
-                            >
-                              {semName}
-                              {nToNth(semName)}
-                            </label>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div className="actions">
-                      <span className="action img-action">
-                        <img src="./img/icons/subject.png" alt="subject" />
-                        Subjects
-                      </span>
-                      <span className="action img-action">
-                        <img src="./img/icons/edit.png" alt="edit" /> Edit
-                      </span>
-                      <span className="action img-action">
-                        <img src="./img/icons/delete.png" alt="delete" />
-                        Delete
-                      </span>
-                    </div>
-                  </div>
-                );
-              }
-            }
-          })}
+          <div className="heading-red-small programme-heading">Programmes</div>
+          {programmeActionElement[0] ? (
+            programmeActionElement
+          ) : (
+            <em className="no-programme">no programmes to show</em>
+          )}
           <div id="new-programme">
-            <button className="medium-blue-btn edit" onClick={openProgrammePopup}>
+            <button
+              className="medium-blue-btn edit"
+              onClick={() => openProgrammePopup(department)}
+            >
               <img src="./img/icons/plus.png" alt="delete" />
               New Programme
             </button>
@@ -199,19 +212,27 @@ const ManageDataPopups = ({
 
   const programmePopup = (
     <div className="popup">
-      <div className="big-popup-inner">
+      <div className="big-popup-inner large-popup">
         <button
           className="popup-close"
           onClick={() => {
-            console.log('close')
+            console.log('close');
             setPopup(null);
             resetDepartment();
           }}
         >
           <img src="./img/icons/close.png" alt="close" />
         </button>
-        <strong>Programmes</strong>
-        <em>no programmes to show</em>
+        <span className="heading-white-small">
+          {adminData.currentDepartment}
+        </span>
+        <strong className="programme-heading">Programmes</strong>
+
+        {programmeActionElement[0] ? (
+          programmeActionElement
+        ) : (
+          <em className="no-programme">no programmes to show</em>
+        )}
         <br />
         <strong>New Programme</strong>
         <div id="programme-grid">
@@ -305,7 +326,6 @@ const ManageDataPopups = ({
       </div>
     </div>
   );
-
   const teacherPopup = (
     <div className="popup">
       <div className="big-popup-inner">
@@ -351,10 +371,10 @@ const ManageDataPopups = ({
   }
   return <>{popup}</>;
 };
-
 ManageDataPopups.propTypes = {
   addDepartment: PropTypes.func.isRequired,
   addProgramme: PropTypes.func.isRequired,
+  changeCurrentDepartment: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
   resetDepartment: PropTypes.func.isRequired,
   adminData: PropTypes.object,
@@ -370,4 +390,5 @@ export default connect(mapStateToProps, {
   resetDepartment,
   addProgramme,
   setAlert,
+  changeCurrentDepartment,
 })(ManageDataPopups);
