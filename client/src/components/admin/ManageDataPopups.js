@@ -37,6 +37,8 @@ const ManageDataPopups = ({
     duration: '',
     isOdd: false,
   });
+  const popupStages = ['editDepartment', 'addProgramme', 'editProgramme','subject', 'editSubject', 'teacher', 'editTeacher']
+  const [popupStage, setPopupStage] = useState(null);
   useEffect(() => {
     isDepartmentAdded && setPopup('programme');
   }, [isDepartmentAdded]);
@@ -147,6 +149,7 @@ const ManageDataPopups = ({
           onClick={() => {
             setPopup(null);
             resetDepartment();
+            setPopupStage(null);
           }}
         >
           <img src="./img/icons/close.png" alt="close" />
@@ -175,6 +178,7 @@ const ManageDataPopups = ({
           onClick={() => {
             setPopup(null);
             resetDepartment();
+            setPopupStage(null);
           }}
         >
           <img src="./img/icons/close.png" alt="close" />
@@ -194,7 +198,9 @@ const ManageDataPopups = ({
           <div id="new-programme">
             <button
               className="medium-blue-btn edit"
-              onClick={() => openProgrammePopup(department)}
+              onClick={() => {
+                setPopupStage(0);
+                openProgrammePopup(department)}}
             >
               <img src="./img/icons/plus.png" alt="delete" />
               New Programme
@@ -219,6 +225,7 @@ const ManageDataPopups = ({
             console.log('close');
             setPopup(null);
             resetDepartment();
+            setPopupStage(null);
           }}
         >
           <img src="./img/icons/close.png" alt="close" />
@@ -289,8 +296,8 @@ const ManageDataPopups = ({
             <button onClick={addNewProgramme}>Add</button>
           </div>
         </div>
-        <button className="next-popup next-subject" onClick={departmentNext}>
-          Add Subjects
+        <button className="next-popup back-btn" onClick={()=> {setPopup(popupStages[popupStage])}}>
+          Back
         </button>
         <button
           className="next-popup finish-popup"

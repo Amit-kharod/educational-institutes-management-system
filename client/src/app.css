@@ -402,9 +402,9 @@
 .next-popup:active {
   background-color: #e74343;
 }
-.next-subject {
+.back-btn {
   right: 150px;
-  width: 150px;
+  width: 80px;
 }
 /* Programme Popup */
 #programme-grid {
