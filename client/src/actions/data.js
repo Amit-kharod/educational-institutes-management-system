@@ -41,6 +41,7 @@ export const addDepartment = (name) => async (dispatch) => {
         type: ADD_DEPARTMENT_SUCCESS,
         payload: true,
       })
+      dispatch(setDepartmentData());
     } catch (err) {
       console.log(err);
       const errors = err.response.data.msg;
@@ -82,7 +83,7 @@ export const addProgramme = (fullName, shortForm, isOdd, duration, departmentNam
     console.log(body);
     try {
       const res = await axios.post('/api/programme', body, config);
-      console.log(res)
+      dispatch(setDepartmentData());
       dispatch(setAlert(res.data.msg, 'success'))
     } catch (err) {
       console.log(err);

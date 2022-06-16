@@ -5,6 +5,7 @@ import {
   addProgramme,
   resetDepartment,
 } from '../../actions/data';
+import { toTitleCase, nToNth } from '../../utils/stringFunctions';
 import { setAlert } from '../../actions/alert';
 import PropTypes from 'prop-types';
 
@@ -17,9 +18,12 @@ const ManageDataPopups = ({
   addProgramme,
   adminData,
   resetDepartment,
+  data,
 }) => {
+  console.log(currentPopup);
   const { isDepartmentAdded, currentDepartment } = adminData;
-  const { department, programme, sem, subject, teacher } = currentModificationState;
+  const { department, programme, sem, subject, teacher } =
+    currentModificationState;
   let popup = <Fragment></Fragment>;
   const [departmentData, setDepartmentData] = useState({
     name: '',
@@ -67,6 +71,10 @@ const ManageDataPopups = ({
       setAlert('Enter a valid Program name', 'danger');
     }
   };
+
+  const openProgrammePopup = () => {
+    setPopup('programme');
+  }
   const addDepartmentPopup = (
     <div className="popup">
       <div className="big-popup-inner popup-center">
@@ -95,10 +103,9 @@ const ManageDataPopups = ({
       </div>
     </div>
   );
-
   const editDepartmentPopup = (
     <div className="popup">
-      <div className="big-popup-inner popup-center">
+      <div className="big-popup-inner">
         <button
           className="popup-close"
           onClick={() => {
@@ -108,19 +115,84 @@ const ManageDataPopups = ({
         >
           <img src="./img/icons/close.png" alt="close" />
         </button>
-        {department}
-        <br />
-        <input
-          id="departmentName"
-          type="text"
-          name="name"
-          placeholder="eg. Department of Biology"
-          value={name}
-          onChange={(e) => onDepartmentChange(e)}
-        />
-        <button className="next-popup" onClick={departmentNext}>
-          Next
-        </button>
+        <div id="modify-dep">
+          <span className="heading-white-small">{department}</span>
+          <div className="edit">
+            <img src="./img/icons/edit.png" alt="edit" />
+            <span>Edit</span>
+          </div>
+          <div id="programme-heading" className="heading-red-small">
+            Programmes
+          </div>
+          {data.map((item) => {
+            console.log(item.name);
+            let programmeArray = false;
+            if (toTitleCase(item.name) === department) {
+              programmeArray = [];
+              item.programmes.map((item2, i) => {
+                programmeArray.push({ name: item2.name, sem: item2.sem });
+              });
+            }
+            if (programmeArray) {
+              for (let i = 0; i < programmeArray.length; i++) {
+                let programmeName = programmeArray[i].name;
+                return (
+                  <div className="programme-actions" key={i}>
+                    <span>
+                      {`${i + 1}. `}
+                      {programmeName.toUpperCase()}
+                    </span>
+                    <div className="sem-radio-group">
+                      {programmeArray[i].sem.map((sem, j) => {
+                        let semName = programmeArray[i].sem[j];
+                        return (
+                          <div className="sem-radio" key={j}>
+                            <input
+                              type="radio"
+                              name="sem"
+                              id={`${programmeName}${programmeArray[i].sem[j]}`}
+                              defaultChecked={j == 0 ? 'checked' : ''}
+                            />
+                            <label
+                              htmlFor={`${programmeName}${programmeArray[i].sem[j]}`}
+                            >
+                              {semName}
+                              {nToNth(semName)}
+                            </label>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="actions">
+                      <span className="action img-action">
+                        <img src="./img/icons/subject.png" alt="subject" />
+                        Subjects
+                      </span>
+                      <span className="action img-action">
+                        <img src="./img/icons/edit.png" alt="edit" /> Edit
+                      </span>
+                      <span className="action img-action">
+                        <img src="./img/icons/delete.png" alt="delete" />
+                        Delete
+                      </span>
+                    </div>
+                  </div>
+                );
+              }
+            }
+          })}
+          <div id="new-programme">
+            <button className="medium-blue-btn edit" onClick={openProgrammePopup}>
+              <img src="./img/icons/plus.png" alt="delete" />
+              New Programme
+            </button>
+          </div>
+          <div id="teacher-section">
+            <div id="teacher-heading" className="heading-red-small">
+              Teachers
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -131,6 +203,7 @@ const ManageDataPopups = ({
         <button
           className="popup-close"
           onClick={() => {
+            console.log('close')
             setPopup(null);
             resetDepartment();
           }}
@@ -200,7 +273,10 @@ const ManageDataPopups = ({
         </button>
         <button
           className="next-popup finish-popup"
-          onClick={() => setPopup(null)}
+          onClick={() => {
+            setPopup(null);
+            resetDepartment();
+          }}
         >
           Finish
         </button>
@@ -282,11 +358,11 @@ ManageDataPopups.propTypes = {
   setAlert: PropTypes.func.isRequired,
   resetDepartment: PropTypes.func.isRequired,
   adminData: PropTypes.object,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
 };
 const mapStateToProps = (state) => ({
   adminData: state.auth.adminData,
-  data: state.data
+  data: state.data,
 });
 
 export default connect(mapStateToProps, {

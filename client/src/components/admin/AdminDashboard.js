@@ -3,13 +3,20 @@ import ManageDataPopups from './ManageDataPopups';
 
 const AdminDashboard = () => {
   const [currentPopup, setCurrentPopup] = useState(null);
-
+  const modificationState = {
+    department: null,
+    programme: null,
+    sem: null,
+    teacher: null,
+    subject: null,
+  };
   return (
     <Fragment>
       <div id="admin-container">
         <ManageDataPopups
           setPopup={setCurrentPopup}
           currentPopup={currentPopup}
+          currentModificationState={modificationState}
         />
         <div id="statistics">
           <span>Total students registered: </span>

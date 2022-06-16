@@ -8,18 +8,17 @@ import { modifyDepartment } from '../../actions/data';
 const Departments = ({ data, modifyDepartment }) => {
   const [currentPopup, setCurrentPopup] = useState(null);
   const [modificationState, setModificationState] = useState({
-    department: null,
-    programme: null,
-    sem: null,
-    teacher: null,
-    subject: null,
+    department: '',
+    programme: '',
+    sem: '',
+    teacher: '',
+    subject: '',
   });
 
   const editDepartment = (e) => {
     setCurrentPopup('editDepartment');
-    setModificationState({ ...modificationState, department: e.target.id });
+    setModificationState({ ...modificationState, department: toTitleCase(e.target.id) });
   };
-  console.log(modificationState);
   return (
     <div className="department-container">
       <ManageDataPopups
@@ -34,16 +33,16 @@ const Departments = ({ data, modifyDepartment }) => {
             <div className="dep-serial">{i + 1}.</div>
             <div className="dep-name">{toTitleCase(item.name)}</div>
             <div
-              className="dep-action"
-              id={toTitleCase(item.name)}
+              className="edit"
+              id={item.name}
               onClick={(e) => editDepartment(e)}
             >
               <img
                 src="./img/icons/edit.png"
-                id={toTitleCase(item.name)}
+                id={item.name}
                 alt="edit"
               />
-              <span id={toTitleCase(item.name)}>edit</span>
+              <span id={item.name}>Edit</span>
             </div>
           </div>
         );

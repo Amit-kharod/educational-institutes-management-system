@@ -80,7 +80,7 @@ router.post(
           id: student.id,
         },
       };
-
+      
       jwt.sign(
         paylaod,
         config.get('jwtSecret'),
