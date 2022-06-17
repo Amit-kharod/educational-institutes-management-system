@@ -9,10 +9,12 @@ import {
 import { toTitleCase, nToNth } from '../../utils/stringFunctions';
 import { setAlert } from '../../actions/alert';
 import PropTypes from 'prop-types';
+import LectureGrid from '../popup/LectureGrid';
 
 const ManageDataPopups = ({
   currentPopup,
   currentModificationState,
+  setModificationState,
   setPopup,
   setAlert,
   addDepartment,
@@ -22,10 +24,10 @@ const ManageDataPopups = ({
   resetDepartment,
   data,
 }) => {
-  console.log(currentPopup);
   const { isDepartmentAdded, currentDepartment } = adminData;
   const { department, programme, sem, subject, teacher } =
     currentModificationState;
+  let containProgramme = false;
   let popup = <Fragment></Fragment>;
   const [departmentData, setDepartmentData] = useState({
     name: '',
@@ -37,7 +39,15 @@ const ManageDataPopups = ({
     duration: '',
     isOdd: false,
   });
-  const popupStages = ['editDepartment', 'addProgramme', 'editProgramme','subject', 'editSubject', 'teacher', 'editTeacher']
+  const popupStages = [
+    'editDepartment',
+    'programme',
+    'editProgramme',
+    'subject',
+    'editSubject',
+    'teacher',
+    'editTeacher',
+  ];
   const [popupStage, setPopupStage] = useState(null);
   useEffect(() => {
     isDepartmentAdded && setPopup('programme');
@@ -89,6 +99,7 @@ const ManageDataPopups = ({
         <div id="programme-list" key={i}>
           {programmeArray.map((item3, j) => {
             {
+              containProgramme = true;
               let programmeName = item3.name;
               return (
                 <div className="programme-actions" key={j}>
@@ -115,8 +126,18 @@ const ManageDataPopups = ({
                       );
                     })}
                   </div>
-                  <div className="actions">
-                    <span className="action img-action">
+                  <div
+                    className="actions"
+                    onClick={(e) => {
+                      setPopupStage(1);
+                      setPopup('subject');
+                      setModificationState({
+                        ...currentModificationState,
+                        programme: e.target.id.toUpperCase(),
+                      });
+                    }}
+                  >
+                    <span id={`${item3.name}`} className="action img-action">
                       <img src="./img/icons/subject.png" alt="subject" />
                       Subjects
                     </span>
@@ -136,7 +157,7 @@ const ManageDataPopups = ({
       );
     }
   });
-
+  console.log(programmeActionElement);
   const openProgrammePopup = (dep) => {
     changeCurrentDepartment(dep);
     setPopup('programme');
@@ -190,7 +211,7 @@ const ManageDataPopups = ({
             <span>Edit</span>
           </div>
           <div className="heading-red-small programme-heading">Programmes</div>
-          {programmeActionElement[0] ? (
+          {containProgramme ? (
             programmeActionElement
           ) : (
             <em className="no-programme">no programmes to show</em>
@@ -200,7 +221,8 @@ const ManageDataPopups = ({
               className="medium-blue-btn edit"
               onClick={() => {
                 setPopupStage(0);
-                openProgrammePopup(department)}}
+                openProgrammePopup(department);
+              }}
             >
               <img src="./img/icons/plus.png" alt="delete" />
               New Programme
@@ -235,13 +257,12 @@ const ManageDataPopups = ({
         </span>
         <strong className="programme-heading">Programmes</strong>
 
-        {programmeActionElement[0] ? (
+        {containProgramme ? (
           programmeActionElement
         ) : (
           <em className="no-programme">no programmes to show</em>
         )}
-        <br />
-        <strong>New Programme</strong>
+        <strong className="heading-margin">New Programme</strong>
         <div id="programme-grid">
           <div id="full-name">
             <label>Full Name</label>
@@ -296,7 +317,12 @@ const ManageDataPopups = ({
             <button onClick={addNewProgramme}>Add</button>
           </div>
         </div>
-        <button className="next-popup back-btn" onClick={()=> {setPopup(popupStages[popupStage])}}>
+        <button
+          className="next-popup back-btn"
+          onClick={() => {
+            setPopup(popupStages[popupStage]);
+          }}
+        >
           Back
         </button>
         <button
@@ -314,25 +340,50 @@ const ManageDataPopups = ({
   const subjectPopup = (
     <div className="popup">
       <div className="big-popup-inner">
-        <button className="popup-close" onClick={() => setPopup(null)}>
+        <button
+          className="popup-close"
+          onClick={() => {
+            setPopup(null);
+            resetDepartment();
+            setPopupStage(null);
+          }}
+        >
           <img src="./img/icons/close.png" alt="close" />
         </button>
-        Enter the name of the department
-        <br />
-        <input
-          id="departmentName"
-          type="text"
-          name="name"
-          placeholder="eg. Department of Biology"
-          value={name}
-          onChange={(e) => onProgrammeChange(e)}
-        />
+        <strong className="heading-margin">
+          {currentModificationState.programme} Subjects
+        </strong>
+        <em>no subjects to show</em>
+        <strong className="heading-margin">Add Subject</strong>
+        <div id="subjectName">
+          <span>Name</span>
+          <input
+            id="departmentName"
+            type="text"
+            name="name"
+            placeholder="eg. Department of Biology"
+            value={name}
+            onChange={(e) => onProgrammeChange(e)}
+          />
+        </div>
+        <span id="lecture-caption">Enter Lectures in a Week</span>
+        <LectureGrid />
+        <button
+          className="next-popup back-btn"
+          onClick={() => {
+            setPopup(popupStages[popupStage]);
+            setPopupStage(0);
+          }}
+        >
+          Back
+        </button>
         <button className="next-popup" onClick={departmentNext}>
           Next
         </button>
       </div>
     </div>
   );
+
   const teacherPopup = (
     <div className="popup">
       <div className="big-popup-inner">

@@ -25,6 +25,7 @@ const Departments = ({ data, modifyDepartment }) => {
         setPopup={setCurrentPopup}
         currentPopup={currentPopup}
         currentModificationState={modificationState}
+        setModificationState={setModificationState}
       />
       <div className="heading-red">DEPARTMENTS</div>
       {data.map((item, i) => {

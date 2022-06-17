@@ -356,7 +356,6 @@
   font-size: 1.4em;
 }
 .large-popup {
-  
 }
 .popup-center {
   justify-content: center;
@@ -445,8 +444,8 @@
   background-color: #48b9e6;
 }
 #add-programme-btn {
-grid-column: 1/span 2;
-justify-self: center;
+  grid-column: 1 / span 2;
+  justify-self: center;
 }
 #add-programme-btn button {
   background-color: #f76363;
@@ -473,7 +472,7 @@ justify-self: center;
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content:space-between;
+  justify-content: space-between;
   font-size: 0.8em;
 }
 .programme-actions label {
@@ -484,7 +483,7 @@ justify-self: center;
   width: 70px;
   font-weight: 600;
 }
-.programme-short *{
+.programme-short * {
   margin-right: 4px;
 }
 .no-programme {
@@ -493,16 +492,16 @@ justify-self: center;
 .sem-radio-group {
   display: flex;
 }
-.sem-radio input[type="radio"] {
+.sem-radio input[type='radio'] {
   opacity: 0;
   position: fixed;
   width: 0;
 }
-.sem-radio input[type="radio"]:checked + label {
-  background-color:#48b9e6;
+.sem-radio input[type='radio']:checked + label {
+  background-color: #48b9e6;
   border-color: #319fca;
 }
-.sem-radio input[type="radio"]:focus + label {
+.sem-radio input[type='radio']:focus + label {
   border: 2px solid #444;
 }
 .sem-radio label {
@@ -520,13 +519,49 @@ justify-self: center;
   margin-left: auto;
 }
 .actions * {
-  margin-left:4px;
+  margin-left: 4px;
 }
 #new-programme {
   margin-top: 20px;
 }
 #teacher-heading {
   margin-top: 20px;
+}
+/* Subject Popup */
+.week {
+  background-color: #777;
+  width: 120px;
+}
+.lecture-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 20px;
+}
+.lecture input {
+  width: 40px;
+}
+.time {
+  display: flex;
+  align-items: flex-start;
+}
+.time span {
+  font-size: 1rem;
+}
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.lecture select {
+  margin: 2px;
+}
+#lecture-caption {
+  font-size: 1.2rem;
+}
+.lecture-not-active > .time {
+  visibility: hidden;
+}
+.lecture-active > button {
+  background-color: #d5772a;
 }
 /* common styles */
 .big-blue-btn,
@@ -544,7 +579,6 @@ justify-self: center;
   font-weight: 900;
   cursor: pointer;
 }
-
 .big-blue-btn:hover {
   background-color: #67aff3;
 }
@@ -678,7 +712,7 @@ justify-self: center;
   width: 40px;
 }
 .action {
-  color: #F5F191;
+  color: #f5f191;
   font-weight: 600;
   font-size: medium;
   align-self: center;
@@ -690,6 +724,10 @@ justify-self: center;
 }
 .img-action img {
   width: 30px;
+}
+.heading-margin {
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
 /* Animations */
 @keyframes fadeIn {
