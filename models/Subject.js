@@ -6,10 +6,7 @@ const SubjectSchema = mongoose.Schema({
     required: true,
   },
   lecture: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'lecture' }],
-  },
-  topics: {
-    type: [String],
+    type: Object,
     required: true,
   },
   attendence: {
