@@ -10,6 +10,7 @@ import { toTitleCase, nToNth } from '../../utils/stringFunctions';
 import { setAlert } from '../../actions/alert';
 import PropTypes from 'prop-types';
 import LectureGrid from '../popup/LectureGrid';
+import SubjectList from '../popup/SubjectList';
 
 const ManageDataPopups = ({
   currentPopup,
@@ -44,6 +45,7 @@ const ManageDataPopups = ({
     'programme',
     'editProgramme',
     'subject',
+    'lecture',
     'editSubject',
     'teacher',
     'editTeacher',
@@ -86,7 +88,33 @@ const ManageDataPopups = ({
     }
   };
 
-  // Fectch programmes details from department and render them
+  const subjectValidation = (subject) => {
+    const isSubjectValid = /^[a-z A-Z]+$/.test(subject);
+    if (isSubjectValid) {
+      setPopup('lecture');
+      setPopupStage(3);
+      setModificationState({ ...currentModificationState, subject: subject });
+    } else {
+      setAlert('Enter a valid Subject name', 'danger');
+    }
+  };
+  const setProgrammeSemState = (e) => {
+    let semElements = e.parentNode.parentNode.childNodes[1].childNodes;
+    let semElementsLength = semElements.length;
+    for (let i = 0; i < semElementsLength; i++) {
+      if (semElements[i].childNodes[0]) {
+        if (semElements[i].childNodes[0].checked) {
+          setModificationState({
+            ...currentModificationState,
+            sem: semElements[i].id,
+            programme: e.id.toUpperCase(),
+          });
+          setPopupStage(1);
+        }
+      }
+    }
+  };
+  // Fetch programmes details from department and render them
   const programmeActionElement = data.map((item, i) => {
     console.log(item.name);
     let programmeArray = false;
@@ -111,7 +139,11 @@ const ManageDataPopups = ({
                     {item3.sem.map((sem, k) => {
                       let semName = item3.sem[k];
                       return (
-                        <div className="sem-radio" key={k}>
+                        <div
+                          className="sem-radio"
+                          id={`${semName}${nToNth(semName)}`}
+                          key={k}
+                        >
                           <input
                             type="radio"
                             name={`sem${j}`}
@@ -126,25 +158,34 @@ const ManageDataPopups = ({
                       );
                     })}
                   </div>
-                  <div
-                    className="actions"
-                    onClick={(e) => {
-                      setPopupStage(1);
-                      setPopup('subject');
-                      setModificationState({
-                        ...currentModificationState,
-                        programme: e.target.id.toUpperCase(),
-                      });
-                    }}
-                  >
-                    <span id={`${item3.name}`} className="action img-action">
+                  <div className="actions">
+                    <span
+                      id={`${item3.name}`}
+                      className="action img-action"
+                      onClick={(e) => {
+                        setProgrammeSemState(e.target);
+                        setPopup('subject');
+                      }}
+                    >
                       <img src="./img/icons/subject.png" alt="subject" />
                       Subjects
                     </span>
-                    <span className="action img-action">
+                    <span
+                      id={`${item3.name}`}
+                      className="action img-action"
+                      onClick={(e) => {
+                        setProgrammeSemState(e.target);
+                      }}
+                    >
                       <img src="./img/icons/edit.png" alt="edit" /> Edit
                     </span>
-                    <span className="action img-action">
+                    <span
+                      id={`${item3.name}`}
+                      className="action img-action"
+                      onClick={(e) => {
+                        setProgrammeSemState(e.target);
+                      }}
+                    >
                       <img src="./img/icons/delete.png" alt="delete" />
                       Delete
                     </span>
@@ -157,7 +198,7 @@ const ManageDataPopups = ({
       );
     }
   });
-  console.log(programmeActionElement);
+  console.log(currentModificationState);
   const openProgrammePopup = (dep) => {
     changeCurrentDepartment(dep);
     setPopup('programme');
@@ -191,6 +232,7 @@ const ManageDataPopups = ({
       </div>
     </div>
   );
+
   const editDepartmentPopup = (
     <div className="popup">
       <div className="big-popup-inner">
@@ -337,9 +379,9 @@ const ManageDataPopups = ({
       </div>
     </div>
   );
-  const subjectPopup = (
+  const lecturePopup = (
     <div className="popup">
-      <div className="big-popup-inner">
+      <div className="big-popup-inner popup-center">
         <button
           className="popup-close"
           onClick={() => {
@@ -350,22 +392,6 @@ const ManageDataPopups = ({
         >
           <img src="./img/icons/close.png" alt="close" />
         </button>
-        <strong className="heading-margin">
-          {currentModificationState.programme} Subjects
-        </strong>
-        <em>no subjects to show</em>
-        <strong className="heading-margin">Add Subject</strong>
-        <div id="subjectName">
-          <span>Name</span>
-          <input
-            id="departmentName"
-            type="text"
-            name="name"
-            placeholder="eg. Department of Biology"
-            value={name}
-            onChange={(e) => onProgrammeChange(e)}
-          />
-        </div>
         <span id="lecture-caption">Enter Lectures in a Week</span>
         <LectureGrid />
         <button
@@ -379,6 +405,36 @@ const ManageDataPopups = ({
         </button>
         <button className="next-popup" onClick={departmentNext}>
           Next
+        </button>
+      </div>
+    </div>
+  );
+
+  const subjectPopup = (
+    <div className="popup">
+      <div className="big-popup-inner">
+        <button
+          className="popup-close"
+          onClick={() => {
+            setPopup(null);
+            resetDepartment();
+            setPopupStage(null);
+          }}
+        >
+          <img src="./img/icons/close.png" alt="close" />
+        </button>
+        <SubjectList
+          currentModificationState={currentModificationState}
+          subjectValidation={subjectValidation}
+        />
+        <button
+          className="next-popup back-btn"
+          onClick={() => {
+            setPopup(popupStages[popupStage]);
+            setPopupStage(0);
+          }}
+        >
+          Back
         </button>
       </div>
     </div>
@@ -422,6 +478,9 @@ const ManageDataPopups = ({
       break;
     case 'subject':
       popup = subjectPopup;
+      break;
+    case 'lecture':
+      popup = lecturePopup;
       break;
     case 'teacher':
       popup = teacherPopup;

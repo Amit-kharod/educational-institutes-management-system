@@ -563,6 +563,22 @@
 .lecture-active > button {
   background-color: #d5772a;
 }
+#subjectName span{
+  font-size: 0.8em;
+  margin-right: 10px;
+}
+.input-medium {
+  width: 300px;
+  height: 35px;
+  background-color: black;
+  border: solid 1px rgb(131, 131, 131);
+  border-radius: 4px;
+  margin-top: 10px;
+  text-indent: 5px;
+}
+.input-medium::placeholder {
+  font-size: 1.2em;
+}
 /* common styles */
 .big-blue-btn,
 .big-purple-btn {

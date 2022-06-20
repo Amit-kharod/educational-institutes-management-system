@@ -14,7 +14,7 @@ const LectureGrid = () => {
       name="hour"
       className="hour"
       onChange={(e) => {
-        changeLectureTime(e);
+        changeLectureTime(e.target);
       }}
     >
       <option value="12">12</option>
@@ -36,7 +36,7 @@ const LectureGrid = () => {
       name="minute"
       className="minute"
       onChange={(e) => {
-        changeLectureTime(e);
+        changeLectureTime(e.target);
       }}
     >
       <option value="00">00</option>
@@ -45,106 +45,19 @@ const LectureGrid = () => {
       <option value="45">45</option>
     </select>
   );
-
-  const lectureToggle = (e) => {
-    if (e.target.parentNode.className === 'lecture lecture-not-active') {
-      e.target.parentNode.className = 'lecture lecture-active';
-      switch (e.target.parentNode.id) {
-        case 'monday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            monday: { hour: null, minute: null, isAM: null },
-          });
-          break;
-        case 'tuesday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            tuesday: { hour: null, minute: null, isAM: null },
-          });
-          break;
-        case 'wednesday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            wednesday: { hour: null, minute: null, isAM: null },
-          });
-          break;
-        case 'thursday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            thursday: { hour: null, minute: null, isAM: null },
-          });
-          break;
-        case 'friday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            friday: { hour: null, minute: null, isAM: null },
-          });
-          break;
-        case 'saturday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            saturday: { hour: null, minute: null, isAM: null },
-          });
-          break;
-        default:
-          break;
-      }
-    } else {
-      e.target.parentNode.className = 'lecture lecture-not-active';
-      switch (e.target.parentNode.id) {
-        case 'monday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            monday: null,
-          });
-          break;
-        case 'tuesday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            tuesday: null,
-          });
-          break;
-        case 'wednesday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            wednesday: null,
-          });
-          break;
-        case 'thursday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            thursday: null,
-          });
-          break;
-        case 'friday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            friday: null,
-          });
-          break;
-        case 'saturday':
-          setLectureTimeState({
-            ...lectureTimeState,
-            saturday: null,
-          });
-          break;
-        default:
-          break;
-      }
-    }
-  };
+  console.log(lectureTimeState);
 
   const changeLectureTime = (e) => {
     let hour, minute, isAM, parentElement, parentElementId;
-    if (e.target.name === 'time') {
-      parentElement = e.target.parentNode;
-      parentElementId = e.target.parentNode.parentNode.id;
-      isAM = e.target.value === 'AM' ? true : false;
+    if (e.name === 'time') {
+      parentElement = e.parentNode;
+      parentElementId = e.parentNode.parentNode.id;
+      isAM = e.value === 'AM' ? true : false;
       hour = parentElement.childNodes[0].childNodes[0].value;
       minute = parentElement.childNodes[1].childNodes[0].value;
     } else {
-      parentElement = e.target.parentNode.parentNode;
-      parentElementId = e.target.parentNode.parentNode.parentNode.id;
+      parentElement = e.parentNode.parentNode;
+      parentElementId = e.parentNode.parentNode.parentNode.id;
       isAM = parentElement.childNodes[2].value === 'AM' ? true : false;
       hour = parentElement.childNodes[0].childNodes[0].value;
       minute = parentElement.childNodes[1].childNodes[0].value;
@@ -190,6 +103,59 @@ const LectureGrid = () => {
         break;
     }
   };
+
+  const lectureToggle = (e) => {
+    if (e.target.parentNode.className === 'lecture lecture-not-active') {
+      e.target.parentNode.className = 'lecture lecture-active';
+      changeLectureTime(e.target.parentNode.childNodes[1].childNodes[1].childNodes[0]);
+      console.log(
+        e.target.parentNode.childNodes[1].childNodes[1].childNodes[0]
+      );
+    } else {
+      e.target.parentNode.className = 'lecture lecture-not-active';
+      switch (e.target.parentNode.id) {
+        case 'monday':
+          setLectureTimeState({
+            ...lectureTimeState,
+            monday: null,
+          });
+          break;
+        case 'tuesday':
+          setLectureTimeState({
+            ...lectureTimeState,
+            tuesday: null,
+          });
+          break;
+        case 'wednesday':
+          setLectureTimeState({
+            ...lectureTimeState,
+            wednesday: null,
+          });
+          break;
+        case 'thursday':
+          setLectureTimeState({
+            ...lectureTimeState,
+            thursday: null,
+          });
+          break;
+        case 'friday':
+          setLectureTimeState({
+            ...lectureTimeState,
+            friday: null,
+          });
+          break;
+        case 'saturday':
+          setLectureTimeState({
+            ...lectureTimeState,
+            saturday: null,
+          });
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
   return (
     <div className="lecture-grid">
       <div className="lecture lecture-not-active" id="monday">
@@ -209,7 +175,7 @@ const LectureGrid = () => {
             name="time"
             className="am-pm"
             onChange={(e) => {
-              changeLectureTime(e);
+              changeLectureTime(e.target);
             }}
           >
             <option value="AM">AM</option>
@@ -234,7 +200,7 @@ const LectureGrid = () => {
             name="time"
             className="am-pm"
             onChange={(e) => {
-              changeLectureTime(e);
+              changeLectureTime(e.target);
             }}
           >
             <option value="AM">AM</option>
@@ -259,7 +225,7 @@ const LectureGrid = () => {
             name="time"
             className="am-pm"
             onChange={(e) => {
-              changeLectureTime(e);
+              changeLectureTime(e.target);
             }}
           >
             <option value="AM">AM</option>
@@ -284,7 +250,7 @@ const LectureGrid = () => {
             name="time"
             className="am-pm"
             onChange={(e) => {
-              changeLectureTime(e);
+              changeLectureTime(e.target);
             }}
           >
             <option value="AM">AM</option>
@@ -309,7 +275,7 @@ const LectureGrid = () => {
             name="time"
             className="am-pm"
             onChange={(e) => {
-              changeLectureTime(e);
+              changeLectureTime(e.target);
             }}
           >
             <option value="AM">AM</option>
@@ -334,7 +300,7 @@ const LectureGrid = () => {
             name="time"
             className="am-pm"
             onChange={(e) => {
-              changeLectureTime(e);
+              changeLectureTime(e.target);
             }}
           >
             <option value="AM">AM</option>
