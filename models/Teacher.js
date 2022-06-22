@@ -7,9 +7,11 @@ const TeacherSchema = mongoose.Schema({
   },
   userID: {
     type: String,
+    required: true,
   },
   password: {
     type: String,
+    required: true,
   },
   subject: {
     type: [{ type: Object }],
