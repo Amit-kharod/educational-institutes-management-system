@@ -84,7 +84,7 @@ router.post(
       );
     } catch (err) {
       if (err instanceof MongoServerError && err.code === 11000) {
-        return res.status(400).send('Student already registered');
+        return res.status(400).send('MongoServerError');
       }
       console.log(err.toString());
       res.status(500).send('Server error');

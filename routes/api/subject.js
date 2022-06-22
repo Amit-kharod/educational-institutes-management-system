@@ -21,6 +21,20 @@ router.post(
   ],
   async (req, res) => {
     try {
+      let newClass;
+      const subjectSave = async () => {
+        await subject.save((err, item) => {
+          if (err) {
+            return res.status(500).send('Server Error');
+          } else {
+            programmeClass.subject.push(item._id.toString());
+            newClass = new Class(programmeClass);
+            newClass.save();
+            return res.status(200).json({ msg: 'Subject added' });
+          }
+        });
+      };
+
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -29,28 +43,37 @@ router.post(
       name = name.toLowerCase();
       programme = programme.toLowerCase();
 
-      // adding new subject
-      let subject = await Subject.findOne({ name: name });
-      if (subject) {
-        return res.status(400).json({ msg: 'Subject already exits' });
-      }
-      const subjectFields = {
-        name: name,
-        lecture: lectures,
-      };
-      subject = new Subject(subjectFields);
-      await subject.save();
-
       let programmeClass = await Class.findOne({
         programme: programme,
         sem: sem,
       });
-      if (programmeClass) {
-        programmeClass.subject.push(name);
-        const newClass = new Class(programmeClass);
-        await newClass.save();
+      const subjectFields = {
+        name: name,
+        lecture: lectures,
+      };
+      let subject = new Subject(subjectFields);
+
+      if (!programmeClass) {
+        return res.status(400).json({ msg: 'Invalid programme or sem' });
       }
-      res.status(200).json({ msg: 'Subject added' });
+      // adding new subject
+      let subjects = [];
+      if (programmeClass.subject[0]) {
+        await programmeClass.subject.map(async (item) => {
+          let sub = await Subject.findOne({ _id: item });
+          console.log(sub);
+          if (sub) {
+            subjects.push(sub.name);
+            if (subjects.includes(name)) {
+              return res.status(400).json({ msg: 'Subject already exits' });
+            } else {
+              await subjectSave();
+            }
+          }
+        });
+      } else {
+        await subjectSave();
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
