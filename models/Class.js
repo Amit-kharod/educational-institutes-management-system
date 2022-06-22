@@ -13,7 +13,7 @@ const ClassSchema = mongoose.Schema({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'student' }],
   },
   subject: {
-    type: [{ type: String }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'subject' }],
   },
   poll: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,6 +25,9 @@ const ClassSchema = mongoose.Schema({
   assignment: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'assignment' }],
   },
+  attendence: {
+    type: Object,
+  }
 });
 
 module.exports = mongoose.model('class', ClassSchema);

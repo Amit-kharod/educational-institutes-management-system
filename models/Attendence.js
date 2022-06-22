@@ -1,21 +1,15 @@
 const mongoose = require('mongoose');
 
 const AttendenceSchema = mongoose.Schema({
-  subject: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'subject',
-    required: true,
-  },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   attendence: {
     type: [
       {
         student: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'student',
+          type: Number,
           required: true,
         },
         isPresent: {
