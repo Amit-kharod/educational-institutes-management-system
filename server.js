@@ -25,6 +25,7 @@ app.use('/api/students', require('./routes/api/students'));
 app.use('/api/syllabus', require('./routes/api/syllabus'));
 app.use('/api/teacher', require('./routes/api/teacher'));
 app.use('/api/assignment', require('./routes/api/assignment'));
+app.use('/api/test', require('./routes/api/test'));
 app.use('/api/class', require('./routes/api/class'));
 app.use('/api/department', require('./routes/api/department'));
 app.use('/api/lecture', require('./routes/api/lecture'));
