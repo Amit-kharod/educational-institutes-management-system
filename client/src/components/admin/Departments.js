@@ -28,7 +28,7 @@ const Departments = ({ data, modifyDepartment }) => {
         setModificationState={setModificationState}
       />
       <div className="heading-red">DEPARTMENTS</div>
-      {data.map((item, i) => {
+      {data.length > 0 ? data.map((item, i) => {
         return (
           <div className="department" key={i}>
             <div className="dep-serial">{i + 1}.</div>
@@ -47,7 +47,7 @@ const Departments = ({ data, modifyDepartment }) => {
             </div>
           </div>
         );
-      })}
+      }): <em>No departments to show</em>}
     </div>
   );
 };

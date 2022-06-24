@@ -80,6 +80,7 @@ const ManageDataPopups = ({
     if (isFullNameValid) {
       if (isDurationValid) {
         addProgramme(fullName, shortForm, isOdd, duration, currentDepartment);
+        containProgramme = true;
       } else {
         setAlert('Enter a valid duration', 'danger');
       }
@@ -232,7 +233,7 @@ const ManageDataPopups = ({
       </div>
     </div>
   );
-
+  console.log(data)
   const editDepartmentPopup = (
     <div className="popup">
       <div className="big-popup-inner">
@@ -295,7 +296,8 @@ const ManageDataPopups = ({
           <img src="./img/icons/close.png" alt="close" />
         </button>
         <span className="heading-white-small">
-          {adminData.currentDepartment}
+          {adminData.currentDepartment &&
+            toTitleCase(adminData.currentDepartment)}
         </span>
         <strong className="programme-heading">Programmes</strong>
 
@@ -488,6 +490,7 @@ const ManageDataPopups = ({
   }
   return <>{popup}</>;
 };
+
 ManageDataPopups.propTypes = {
   addDepartment: PropTypes.func.isRequired,
   addProgramme: PropTypes.func.isRequired,
@@ -497,6 +500,7 @@ ManageDataPopups.propTypes = {
   adminData: PropTypes.object,
   data: PropTypes.array.isRequired,
 };
+
 const mapStateToProps = (state) => ({
   adminData: state.auth.adminData,
   data: state.data,

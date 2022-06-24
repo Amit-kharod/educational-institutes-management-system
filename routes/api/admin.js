@@ -4,6 +4,8 @@ const admin = require('../../middleware/admin');
 const adminAuth = require('../../middleware/adminAuth');
 const { check, validationResult } = require('express-validator');
 const Admin = require('../../models/Admin');
+const Student = require('../../models/Student');
+const Class = require('../../models/Class');
 const { randomBytes } = require('crypto');
 const bcrypt = require('bcryptjs');
 const config = require('config');
@@ -15,18 +17,66 @@ const { MongoServerError } = require('mongodb');
 // @access  Public
 router.get('/verify', admin, (req, res) => {
   if (req.admin) {
-    res.send(true)
+    res.send(true);
   }
 });
 
-// @route   GET api/admin/verify
+// @route   GET api/admin/
 // @desc    Token Verification for admin
-// @access  Public
+// @access  Private
 router.get('/', adminAuth, (req, res) => {
   if (req.admin) {
-    res.status(200).json({ msg:'Token is valid' })
+    res.status(200).json({ msg: 'Token is valid' });
   }
 });
+
+// @route   POST api/admin/studentVerification
+// @desc    grant student access to class
+// @access  Private
+router.post(
+  '/studentVerification',
+  adminAuth,
+  [
+    check('registrationNo', 'Enter a valid Registration Number')
+      .not()
+      .isEmpty()
+      .isLength({ min: 10, max: 10 }),
+  ],
+  check('programme', 'Programme name is required').not().isEmpty().isString(),
+  check('sem', 'Semester is required').not().isEmpty().isNumeric(),
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    // Check for errors
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { registrationNo, programme, sem } = req.body;
+    try {
+      const student = await Student.findOne({ registrationNo: registrationNo });
+      if (!student) {
+        return res.status(400).json({ msg: 'Invalid request' });
+      } else {
+        let programmeClass = await Class.findOne({
+          programme: programme,
+          sem: sem,
+        });
+        programmeClass.student.push(student._id.toString());
+        const newClass = new Class(programmeClass);
+        await newClass.save(async (err, item) => {
+          student.verification = true;
+          const newStudent = new Student(student);
+          await newStudent.save();
+        });
+
+        res.status(200).json({ msg: 'Student Verified' });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 // @route   POST api/admin
 // @desc    Authorisation of admin by login details
@@ -54,14 +104,14 @@ router.post(
         const salt = await bcrypt.genSalt(10);
         const adminPassword = await bcrypt.hash(password, salt);
         const adminFields = {
-            adminID: 'admin',
-            password: adminPassword,
-        }
+          adminID: 'admin',
+          password: adminPassword,
+        };
         admin = new Admin(adminFields);
         admin.save();
-        return res.json({ pass: password })
+        return res.json({ pass: password });
       }
-      console.log('a')
+      console.log('a');
       const isMatch = await bcrypt.compare(password, admin.password);
       if (!isMatch) {
         return res
