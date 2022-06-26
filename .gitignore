@@ -6,9 +6,6 @@
 /.pnp
 .pnp.js
 
-# config
-/config/default.json
-
 # misc
 .DS_Store
 .env.local

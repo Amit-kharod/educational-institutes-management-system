@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://amitkharod:hiyKPBGUJ3fqjv2u@cluster0.u9mw7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "jwtSecret": "Educational Institutes Management System",
+  "jwtSecret2": "MCA PROJECT",
+  "adminIP": ["203.81.242.206"]
+}
