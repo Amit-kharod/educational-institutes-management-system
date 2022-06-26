@@ -1,9 +1,19 @@
 import React, { Fragment, useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { toTitleCase, nToNth } from '../../utils/stringFunctions';
 
-const SubjectList = ({ currentModificationState, subjectValidation }) => {
+const SubjectList = ({
+  currentModificationState,
+  subjectValidation,
+  adminData,
+}) => {
+  let isSubject = false;
   const [subjectData, setSubjectData] = useState({
     subjectName: '',
   });
+  const { subjects } = adminData;
+  console.log(subjects[0]);
   const { subjectName } = subjectData;
   const onSubjectChange = (e) =>
     setSubjectData({ [e.target.name]: e.target.value });
@@ -14,7 +24,17 @@ const SubjectList = ({ currentModificationState, subjectValidation }) => {
       <strong className="heading-margin">
         {programme} {sem} Sem Subjects
       </strong>
-      <em>no subjects to show</em>
+      {subjects[0] && (
+        subjects.map((item,i) => {
+          if (item.programme.toUpperCase() === programme && item.sem == sem.charAt(0)) {
+            isSubject = true;
+            return <div key={i}>{toTitleCase(item.name)}</div>;
+          }
+        })
+      )}
+    {
+      !isSubject && <em>no subjects to show</em>
+    }
       <strong className="heading-margin">Add Subject</strong>
       <div id="subjectName">
         <span>Name</span>
@@ -22,16 +42,27 @@ const SubjectList = ({ currentModificationState, subjectValidation }) => {
           className="input-medium"
           type="text"
           name="subjectName"
-          placeholder="eg. Department of Biology"
+          placeholder="eg. Operating System"
           value={subjectName}
           onChange={(e) => onSubjectChange(e)}
         />
       </div>
-      <button className="next-popup" onClick={() => subjectValidation(subjectName)}>
-        Add
+      <button
+        className="next-popup"
+        onClick={() => subjectValidation(subjectName)}
+      >
+        Next
       </button>
     </Fragment>
   );
 };
 
-export default SubjectList;
+SubjectList.propTypes = {
+  adminData: PropTypes.object,
+};
+
+const mapStateToProps = (state) => ({
+  adminData: state.auth.adminData,
+});
+
+export default connect(mapStateToProps, {})(SubjectList);

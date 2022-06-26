@@ -44,6 +44,7 @@ router.post(
   ],
   check('programme', 'Programme name is required').not().isEmpty().isString(),
   check('sem', 'Semester is required').not().isEmpty().isNumeric(),
+  check('status', 'Status is required').not().isEmpty().isBoolean(),
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -51,25 +52,31 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { registrationNo, programme, sem } = req.body;
+    const { registrationNo, programme, sem, status } = req.body;
     try {
       const student = await Student.findOne({ registrationNo: registrationNo });
       if (!student) {
         return res.status(400).json({ msg: 'Invalid request' });
       } else {
-        let programmeClass = await Class.findOne({
-          programme: programme,
-          sem: sem,
-        });
-        programmeClass.student.push(student._id.toString());
-        const newClass = new Class(programmeClass);
-        await newClass.save(async (err, item) => {
-          student.verification = true;
-          const newStudent = new Student(student);
-          await newStudent.save();
-        });
+        if (status) {
+          let programmeClass = await Class.findOne({
+            programme: programme,
+            sem: sem,
+          });
+          programmeClass.student.push(student._id.toString());
+          const newClass = new Class(programmeClass);
+          await newClass.save(async (err, item) => {
+            student.verification = true;
+            const newStudent = new Student(student);
+            await newStudent.save();
+          });
 
-        res.status(200).json({ msg: 'Student Verified' });
+          res.status(200).json({ msg: 'Student Verified' });
+        }
+        else {
+          await Student.deleteOne({ registrationNo: registrationNo });
+          res.status(200).json({ msg: 'Student Rejected' });
+        }
       }
     } catch (err) {
       console.error(err);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const LectureGrid = () => {
+const LectureGrid = ({addSubject}) => {
   const [lectureTimeState, setLectureTimeState] = useState({
     monday: null,
     tuesday: null,
@@ -107,7 +107,9 @@ const LectureGrid = () => {
   const lectureToggle = (e) => {
     if (e.target.parentNode.className === 'lecture lecture-not-active') {
       e.target.parentNode.className = 'lecture lecture-active';
-      changeLectureTime(e.target.parentNode.childNodes[1].childNodes[1].childNodes[0]);
+      changeLectureTime(
+        e.target.parentNode.childNodes[1].childNodes[1].childNodes[0]
+      );
       console.log(
         e.target.parentNode.childNodes[1].childNodes[1].childNodes[0]
       );
@@ -308,6 +310,9 @@ const LectureGrid = () => {
           </select>
         </div>
       </div>
+      <button className="next-popup" onClick={() => addSubject(lectureTimeState)}>
+        Add
+      </button>
     </div>
   );
 };

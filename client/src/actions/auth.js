@@ -11,6 +11,7 @@ import {
   ADMIN_LOGIN,
 } from './types';
 import { setAlert } from './alert';
+import { setAdminData } from './data';
 import setAuthToken from '../utils/setAuthToken';
 
 // Load Student
@@ -34,14 +35,14 @@ export const loadStudent = () => async (dispatch) => {
 
 // Register Student
 export const register =
-  ({ name, email, registrationNo, password }) =>
+  ({ name, email, registrationNo, rollNo, password, programme, sem }) =>
   async (dispatch) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
-    const body = JSON.stringify({ name, email, registrationNo, password });
+    const body = JSON.stringify({ name, email, registrationNo, rollNo, password, programme, sem });
     try {
       const res = await axios.post('/api/students', body, config);
       dispatch({
@@ -113,6 +114,7 @@ export const adminLogin = (id, password) => async (dispatch) => {
       type: ADMIN_LOGIN,
       payload: res.data,
     });
+    dispatch(setAdminData())
   } catch (err) {
     console.log(err);
     const errors = err.response.data.errors;

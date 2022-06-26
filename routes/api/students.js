@@ -79,8 +79,11 @@ router.post(
         password,
         class:programmeClass._id.toString(),
         secretCode,
+        programme: programme,
+        sem: sem,
         verification: false,
       });
+
       // Encrypt password
       const salt = await bcrypt.genSalt(10);
       student.password = await bcrypt.hash(password, salt);
@@ -101,7 +104,7 @@ router.post(
           if (err) throw err;
           res.json({ token, secretCode });
         }
-      );
+      )
     } catch (err) {
       if (err instanceof MongoServerError && err.code === 11000) {
         console.log(err.toString());

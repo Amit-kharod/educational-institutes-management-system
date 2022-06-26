@@ -13,7 +13,9 @@ import {
   RESET_CURRENT_SUBJECT,
   RESET_CURRENT_TEACHER,
   ADD_DEPARTMENT_SUCCESS,
-  SET_DEPARTMENT_DATA
+  SET_DEPARTMENT_DATA,
+  SET_ADMIN_DATA,
+  VERIFY_STUDENT
 } from './types';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
@@ -113,3 +115,79 @@ export const changeCurrentDepartment = (dep) => (dispatch)=> {
     payload: dep
   });
 }
+
+// Get department data and set it to state
+export const setAdminData = () => async (dispatch) => {
+  if(localStorage.adminToken){
+    setAuthToken(localStorage.adminToken);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    try {
+      const res = await axios.get('/api/data/admin');
+      console.log(res)
+      dispatch({
+        type: SET_ADMIN_DATA,
+        payload: res.data,
+      });
+    } catch (err) {
+      console.log(err);
+      dispatch(setAlert(err.response.data.msg, 'danger'))
+    }
+  }
+};
+
+// Verify a student
+
+export const verifyStudent = (registrationNo, programme, sem, status) => async (dispatch) => {
+  if(localStorage.adminToken){
+    setAuthToken(localStorage.adminToken);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    const body = JSON.stringify({ registrationNo, programme, sem, status });
+    console.log(body);
+    try {
+      const res = await axios.post('/api/admin/studentVerification', body, config);
+      console.log(res)
+      dispatch(setAlert(res.data.msg, 'success'))
+      dispatch({
+        type: VERIFY_STUDENT,
+        payload: true
+      });
+      dispatch(setAdminData());
+    } catch (err) {
+      console.log(err);
+      const errors = err.response.data.msg;
+      dispatch(setAlert(err.response.data.msg, 'danger'))
+    }
+  }
+};
+
+// Add new Subject
+export const addNewSubject = (name, programme, sem, lectures) => async (dispatch) => {
+  if(localStorage.adminToken){
+    setAuthToken(localStorage.adminToken);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    const body = JSON.stringify({ name, programme, sem, lectures });
+    console.log(body);
+    try {
+      const res = await axios.post('/api/subject', body, config);
+      dispatch(setDepartmentData());
+      console.log(res);
+      dispatch(setAlert(res.data.msg, 'success'))
+    } catch (err) {
+      console.log(err);
+      const errors = err.response.data.msg;
+      dispatch(setAlert("Request failed", 'danger'))
+    }
+  }
+};

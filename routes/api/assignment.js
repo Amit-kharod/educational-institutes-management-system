@@ -42,6 +42,8 @@ router.post(
       // adding new assignment
       let assignment;
       const assignmentFields = {
+        programme: programme,
+        sem: sem,
         name: name,
         subject: subject,
         lastdate: date,

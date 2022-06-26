@@ -17,7 +17,7 @@ import store from './store';
 import Alert from './components/layout/Alert';
 import { loadStudent, getIP } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
-import { setDepartmentData } from './actions/data';
+import { setAdminData, setDepartmentData } from './actions/data';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -29,9 +29,10 @@ const App = () => {
   useEffect(() => {
     store.dispatch(loadStudent());
     store.dispatch(setDepartmentData());
-    console.log('hi');
+    auth.isAdmin && store.dispatch(setAdminData());
   }, []);
   const { auth } = store.getState();
+  console.log(auth.isAdmin)
   store.dispatch(getIP());
   return (
     <Provider store={store}>

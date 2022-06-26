@@ -49,6 +49,8 @@ router.post(
       });
       const subjectFields = {
         name: name,
+        programme: programme,
+        sem:sem,
         lecture: lectures,
       };
       let subject = new Subject(subjectFields);

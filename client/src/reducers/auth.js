@@ -21,6 +21,8 @@ import {
   MODIFY_TEACHER,
   RESET_CURRENT_TEACHER,
   ADD_DEPARTMENT_SUCCESS,
+  SET_ADMIN_DATA,
+  VERIFY_STUDENT,
 } from '../actions/types';
 
 const initialState = {
@@ -32,7 +34,13 @@ const initialState = {
   admin: null,
   firstLogin: false,
   isAdmin: false,
-  adminData: { isDepartmentAdded: false },
+  adminData: {
+    students: null,
+    unverifiedStudents: null,
+    subjects: null,
+    teachers: null,
+    isDepartmentAdded: false,
+  },
 };
 
 export default function (state = initialState, action) {
@@ -158,6 +166,19 @@ export default function (state = initialState, action) {
         ...state,
         adminData: { ...state.adminData, currentTeacher: null },
       };
+    case SET_ADMIN_DATA:
+      return {
+        ...state,
+        adminData: {
+          ...state.adminData,
+          students: payload.students,
+          unverifiedStudents: payload.unverifiedStudents,
+          subjects:payload.subjects,
+          teachers: payload.teachers
+        },
+      };
+    case VERIFY_STUDENT:
+      return state;
     default:
       return state;
   }

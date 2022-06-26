@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Department = require('../../models/Department');
 const Class = require('../../models/Class');
+const Student = require('../../models/Student');
+const Subject = require('../../models/Subject');
+const Teacher = require('../../models/Teacher');
 const { MongoServerError } = require('mongodb');
 const adminAuth = require('../../middleware/adminAuth');
 
@@ -25,20 +28,20 @@ router.get('/', async (req, res) => {
       item.programme.map((item2) => {
         let sem = [];
         allClasses.find((programmeClass) => {
-          if(programmeClass.programme === item2) {
+          if (programmeClass.programme === item2) {
             sem.push(programmeClass.sem);
           }
-        })
-        const programme = {name: item2, sem:sem}
-        programmes.push(programme)
-      })
+        });
+        const programme = { name: item2, sem: sem };
+        programmes.push(programme);
+      });
       department = {
         name: item.name,
         programmes: programmes,
-        teachers: item.teacher
-      }
+        teachers: item.teacher,
+      };
       departments.push(department);
-    })
+    });
     res.status(200).json({ departments });
   } catch (err) {
     console.error(err.message);
@@ -49,36 +52,32 @@ router.get('/', async (req, res) => {
 // @route   GET api/data/admin
 // @desc    Get data for admin
 // @access  Private
-router.get('/admin',adminAuth, async (req, res) => {
+router.get('/admin', adminAuth, async (req, res) => {
   try {
-    const departments = [];
-    let department = {
+    let subjects = await Subject.find({});
+    const students = [];
+    const unverifiedStudents = [];
+    let teachers = await Teacher.find({});
+    let student = {
       name: '',
-      programmes: [],
-      teachers: [],
+      registrationNo: '',
+      rollNo: '',
+      programme: '',
+      sem: '',
     };
-    const allDepartments = await Department.find({});
-    const allClasses = await Class.find({});
-    allDepartments.map(async (item) => {
-      let programmes = [];
-      let sem = [];
-      item.programme.map((item2) => {
-        allClasses.find((o,i) => {
-          if(o.programme === item2) {
-            sem.push(o.sem);
-          }
-        })
-        const programme = {name: item2, sem:sem}
-        programmes.push(programme)
-      })
-      department = {
+    const allStudents = await Student.find({});
+    allStudents.map(async (item) => {
+      student = {
         name: item.name,
-        programmes: programmes,
-        teachers: item.teacher
-      }
-      departments.push(department);
-    })
-    res.status(200).json({ departments });
+        registrationNo: item.registrationNo,
+        rollNo: item.rollNo,
+        programme: item.programme,
+        sem: item.sem,
+      };
+      !item.verification && unverifiedStudents.push(student);
+      students.push(student);
+    });
+    res.status(200).json({ students, unverifiedStudents, subjects, teachers });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

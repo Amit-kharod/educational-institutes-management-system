@@ -8,6 +8,7 @@ import {
 } from '../../actions/data';
 import { toTitleCase, nToNth } from '../../utils/stringFunctions';
 import { setAlert } from '../../actions/alert';
+import { addNewSubject } from '../../actions/data';
 import PropTypes from 'prop-types';
 import LectureGrid from '../popup/LectureGrid';
 import SubjectList from '../popup/SubjectList';
@@ -24,7 +25,9 @@ const ManageDataPopups = ({
   adminData,
   resetDepartment,
   data,
+  addNewSubject,
 }) => {
+  const [subjectList, setSubjectList] = useState([]);
   const { isDepartmentAdded, currentDepartment } = adminData;
   const { department, programme, sem, subject, teacher } =
     currentModificationState;
@@ -34,6 +37,7 @@ const ManageDataPopups = ({
     name: '',
   });
   const { name } = departmentData;
+  const isTeacher = false;
   const [programmeData, setProgrammeData] = useState({
     fullName: '',
     shortForm: '',
@@ -50,6 +54,7 @@ const ManageDataPopups = ({
     'teacher',
     'editTeacher',
   ];
+
   const [popupStage, setPopupStage] = useState(null);
   useEffect(() => {
     isDepartmentAdded && setPopup('programme');
@@ -114,6 +119,26 @@ const ManageDataPopups = ({
         }
       }
     }
+  };
+
+  const validateTeacher = ()=> {
+    let element = document.getElementsByClassName('subject-checkbox')[0];
+    console.log(document.getElementsByClassName('subject-checkbox')[0])
+  }
+  const addSubject = (allLectures) => {
+    let lectures = { lectures: {} };
+    for (const item in allLectures) {
+      console.log(allLectures[item]);
+      if (allLectures[item]) {
+        lectures = {
+          lectures: { ...lectures.lectures, [item]: allLectures[item] },
+        };
+      }
+    }
+    console.log(lectures);
+    addNewSubject(subject, programme, sem.charAt(0), lectures);
+    setPopup(popupStages[popupStage]);
+    setPopupStage(0);
   };
   // Fetch programmes details from department and render them
   const programmeActionElement = data.map((item, i) => {
@@ -233,7 +258,7 @@ const ManageDataPopups = ({
       </div>
     </div>
   );
-  console.log(data)
+  console.log(data);
   const editDepartmentPopup = (
     <div className="popup">
       <div className="big-popup-inner">
@@ -275,6 +300,17 @@ const ManageDataPopups = ({
             <div id="teacher-heading" className="heading-red-small">
               Teachers
             </div>
+            {!isTeacher ? <em>no teachers to show</em> : <div>dfdf</div>}
+            <button
+              className="medium-blue-btn edit"
+              onClick={() => {
+                setPopupStage(6);
+                setPopup('teacher');
+              }}
+            >
+              <img src="./img/icons/plus.png" alt="delete" />
+              New Teacher
+            </button>
           </div>
         </div>
       </div>
@@ -394,8 +430,11 @@ const ManageDataPopups = ({
         >
           <img src="./img/icons/close.png" alt="close" />
         </button>
+        <span className="small-heading-white">
+          {currentModificationState.subject}
+        </span>
         <span id="lecture-caption">Enter Lectures in a Week</span>
-        <LectureGrid />
+        <LectureGrid addSubject={addSubject} />
         <button
           className="next-popup back-btn"
           onClick={() => {
@@ -404,9 +443,6 @@ const ManageDataPopups = ({
           }}
         >
           Back
-        </button>
-        <button className="next-popup" onClick={departmentNext}>
-          Next
         </button>
       </div>
     </div>
@@ -448,18 +484,53 @@ const ManageDataPopups = ({
         <button className="popup-close" onClick={() => setPopup(null)}>
           <img src="./img/icons/close.png" alt="close" />
         </button>
-        Enter the name of the department
+        <strong>Teachers</strong>
+        <em>No teachers to show</em>
         <br />
-        <input
-          id="departmentName"
-          type="text"
-          name="name"
-          placeholder="eg. Department of Biology"
-          value={name}
-          onChange={(e) => onProgrammeChange(e)}
-        />
-        <button className="next-popup" onClick={departmentNext}>
-          Next
+        <strong>New Teacher</strong>
+        <div className="teacher-name">
+          <label>Name</label>
+          <input
+            id="teacherName"
+            type="text"
+            name="teacher"
+            placeholder=""
+            value={teacher}
+            onChange={(e) =>
+              setModificationState({
+                ...currentModificationState,
+                teacher: e.target.value,
+              })
+            }
+          />
+        </div>
+        <br />
+        <strong>Choose Subjects</strong>
+        {adminData.subjects.map((item, i) => {
+          return (
+            <div key={i} className="subject-checkbox">
+              <input
+                type="checkbox"
+                id={item.programme}
+                name={item.sem}
+                value={item.name}
+              />
+              <label for={`subject${i}`}>{toTitleCase(item.name)}</label>
+            </div>
+          );
+        })}
+        <button className="next-popup" onClick={validateTeacher}>
+          Add
+        </button>
+        <button
+          className="next-popup back-btn"
+          onClick={() => {
+            console.log(popupStage);
+            setPopup('editDepartment');
+            setPopupStage(0);
+          }}
+        >
+          Back
         </button>
       </div>
     </div>
@@ -499,6 +570,7 @@ ManageDataPopups.propTypes = {
   resetDepartment: PropTypes.func.isRequired,
   adminData: PropTypes.object,
   data: PropTypes.array.isRequired,
+  addNewSubject: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -512,4 +584,5 @@ export default connect(mapStateToProps, {
   addProgramme,
   setAlert,
   changeCurrentDepartment,
+  addNewSubject,
 })(ManageDataPopups);

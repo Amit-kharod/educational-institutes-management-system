@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/mongodb');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(
@@ -33,12 +34,18 @@ app.use('/api/programme', require('./routes/api/programme'));
 app.use('/api/subject', require('./routes/api/subject'));
 app.use('/api/data', require('./routes/api/data'));
 
-const port = process.env.PORT || 5000;
+// Serve static assets in production
 
-app.get('/', (req, res) => {
-  console.log('Main Route');
-  res.send('Hello');
-});
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

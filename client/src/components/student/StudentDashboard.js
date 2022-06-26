@@ -11,9 +11,17 @@ const StudentDashboard = ({ student, isFirstLogin }) => {
   const [studentData, setStudentData] = useState({
     name: name,
   });
+
+  const notVerified = 
+  <div>
+    You are not verified yet. Wait until the admin verifies you.
+  </div>
+
+  const verified = <div>you are verified</div>
   return (
     <Fragment>
-      <div>Welcome back {name}</div>
+      <div>Welcome back {name},</div>
+      {student.verification ?  verified : notVerified}
       {isFirstLogin && buttonPopup && (
         <Popup setTrigger={setButtonPopup}>
           <div id="secret-code">

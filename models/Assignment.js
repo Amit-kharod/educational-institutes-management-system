@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 
 const AssignmentSchema = mongoose.Schema({
+  programme: {
+    type: String,
+    required: true,
+  },
+  sem: {
+    type: Number,
+    required: true,
+  },
   name: {
     type: String,
     required: true,

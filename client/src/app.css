@@ -164,6 +164,7 @@
 #password input,
 #name-dmc input,
 #registration-no input,
+#roll-no input,
 #signup-email input,
 #signup-password input,
 #signup-password-confirm input {
@@ -175,6 +176,7 @@
   margin-bottom: 10px;
   text-indent: 5px;
 }
+#roll-no input::placeholder,
 #user-name input::placeholder,
 #password input::placeholder,
 #name-dmc input::placeholder,
@@ -261,22 +263,23 @@
   margin-left: 40px;
   width: 90vw;
   height: 800px;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 #project-name {
   grid-row: 1 / span 2;
-  font-size: 9em;
+  font-size: 8em;
   font-weight: 900;
+  align-self: center;
 }
 .eims {
   color: #ffcaca;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.1em;
 }
 .eims span {
   color: #ff7777;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  white-space: normal;
 }
 #headline {
   align-self: flex-end;
@@ -323,6 +326,12 @@
   width: 30px;
   background-color: inherit;
 }
+.verification-grid {
+  display: grid;
+  width: 500px;
+  grid-template-columns:repeat(5, 1fr);
+}
+
 /* Departments Page */
 .department-container {
   display: flex;
@@ -381,6 +390,18 @@
   text-indent: 5px;
 }
 #departmentName::placeholder {
+  font-size: 1.2em;
+}
+#teacherName {
+  width: 200px;
+  height: 35px;
+  background-color: black;
+  border: solid 1px rgb(131, 131, 131);
+  border-radius: 4px;
+  margin-top: 10px;
+  text-indent: 5px;
+}
+#teacherName::placeholder {
   font-size: 1.2em;
 }
 .next-popup {
