@@ -15,9 +15,10 @@ import Departments from './components/admin/Departments';
 import { Provider } from 'react-redux';
 import store from './store';
 import Alert from './components/layout/Alert';
-import { loadStudent, getIP } from './actions/auth';
+import { loadStudent, getIP, loadTeacher } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
 import { setAdminData, setDepartmentData } from './actions/data';
+import TeacherDashboard from './components/teacher/TeacherDashboard';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -28,6 +29,7 @@ const App = () => {
   console.log(state);
   useEffect(() => {
     store.dispatch(loadStudent());
+    store.dispatch(loadTeacher());
     store.dispatch(setDepartmentData());
     auth.isAdmin && store.dispatch(setAdminData());
   }, []);
@@ -44,7 +46,14 @@ const App = () => {
             <Route
               exact
               path="/studentDashboard"
-              element={<StudentDashboard trigger={true} />}
+              element={<StudentDashboard/>}
+            />
+          )}
+          {auth.isTeacher && (
+            <Route
+              exact
+              path="/teacherDashboard"
+              element={<TeacherDashboard/>}
             />
           )}
           {auth.isAdmin && (

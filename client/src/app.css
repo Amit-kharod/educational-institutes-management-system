@@ -74,7 +74,14 @@
 .alert-success {
   background-color: #4fc255;
 }
-
+.lecture-flex{
+  display: flex;
+  width: 500px;
+  justify-content: flex-start;
+}
+.lecture-flex *{
+margin-right: 50px;
+}
 /* Popup */
 .popup {
   position: fixed;
@@ -655,7 +662,20 @@
 .inline-link > span:active {
   color: rgb(255, 255, 255);
 }
-
+.flex{
+  display:flex;
+  width: 400px;
+  justify-content: space-around;
+}
+.hide{
+  display: none;
+}
+#teacher-heading {
+  text-align: center;
+}
+#login-details{
+font-size: medium;
+}
 .purple-btn,
 .blue-btn {
   display: flex;

@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 import { verifyStudent, setAdminData } from '../../actions/data';
 import { toTitleCase, nToNth } from '../../utils/stringFunctions';
 
-const AdminDashboard = ({ students, unverifiedStudents, verifyStudent, setAdminData }) => {
+const AdminDashboard = ({
+  students,
+  unverifiedStudents,
+  verifyStudent,
+  setAdminData,
+}) => {
   const [currentPopup, setCurrentPopup] = useState(null);
   const modificationState = {
     department: null,
@@ -14,16 +19,26 @@ const AdminDashboard = ({ students, unverifiedStudents, verifyStudent, setAdminD
     teacher: null,
     subject: null,
   };
-  
+
   console.log(students);
-  const verify = (e)=> {
-    console.log(unverifiedStudents[e].registrationNo)
-    verifyStudent(unverifiedStudents[e].registrationNo, unverifiedStudents[e].programme, unverifiedStudents[e].sem, true)
-  }
-  const reject = (e)=> {
-    console.log(unverifiedStudents[e].registrationNo)
-    verifyStudent(unverifiedStudents[e].registrationNo, unverifiedStudents[e].programme, unverifiedStudents[e].sem, false)
-  }
+  const verify = (e) => {
+    console.log(unverifiedStudents[e].registrationNo);
+    verifyStudent(
+      unverifiedStudents[e].registrationNo,
+      unverifiedStudents[e].programme,
+      unverifiedStudents[e].sem,
+      true
+    );
+  };
+  const reject = (e) => {
+    console.log(unverifiedStudents[e].registrationNo);
+    verifyStudent(
+      unverifiedStudents[e].registrationNo,
+      unverifiedStudents[e].programme,
+      unverifiedStudents[e].sem,
+      false
+    );
+  };
 
   return (
     <Fragment>
@@ -49,6 +64,11 @@ const AdminDashboard = ({ students, unverifiedStudents, verifyStudent, setAdminD
           <img src="./img/icons/plus.png" alt="" />
           New Department
         </button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <div id="student-verification">
           <div className="heading-white">Student Verification</div>
           <div className="verification-grid">
@@ -64,16 +84,24 @@ const AdminDashboard = ({ students, unverifiedStudents, verifyStudent, setAdminD
                   <span className="verification-grid-item">
                     {item.registrationNo}
                   </span>
-                  <span className="verification-grid-item">
-                    {item.rollNo}
-                  </span>
+                  <span className="verification-grid-item">{item.rollNo}</span>
                   <span className="verification-grid-item">
                     {item.programme.toUpperCase()} {item.sem}
                     {nToNth(item.sem)}
                   </span>
                   <span className="verification-grid-action">
-                      <img src="./img/icons/tick.png" alt="" id={i} onClick={(e) => verify(e.target.id)}/>
-                      <img src="./img/icons/close.png" alt="" id={i} onClick={(e) => reject(e.target.id)}/>
+                    <img
+                      src="./img/icons/tick.png"
+                      alt=""
+                      id={i}
+                      onClick={(e) => verify(e.target.id)}
+                    />
+                    <img
+                      src="./img/icons/close.png"
+                      alt=""
+                      id={i}
+                      onClick={(e) => reject(e.target.id)}
+                    />
                   </span>
                 </Fragment>
               );
@@ -95,4 +123,6 @@ const mapStateToProps = (state) => ({
   unverifiedStudents: state.auth.adminData.unverifiedStudents,
 });
 
-export default connect(mapStateToProps, {verifyStudent, setAdminData})(AdminDashboard);
+export default connect(mapStateToProps, { verifyStudent, setAdminData })(
+  AdminDashboard
+);

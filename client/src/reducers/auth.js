@@ -23,6 +23,8 @@ import {
   ADD_DEPARTMENT_SUCCESS,
   SET_ADMIN_DATA,
   VERIFY_STUDENT,
+  TEACHER_LOGIN,
+  TEACHER_LOADED,
 } from '../actions/types';
 
 const initialState = {
@@ -34,12 +36,14 @@ const initialState = {
   admin: null,
   firstLogin: false,
   isAdmin: false,
+  isTeacher: false,
   adminData: {
     students: null,
     unverifiedStudents: null,
     subjects: null,
     teachers: null,
     isDepartmentAdded: false,
+    assignments: null,
   },
 };
 
@@ -54,6 +58,14 @@ export default function (state = initialState, action) {
         isAuthenticated: true,
         loading: false,
         student: payload,
+      };
+    case TEACHER_LOADED:
+      console.log(payload)
+      return {
+        ...state,
+        isAuthenticated: true,
+        isTeacher: true,
+        teacher: payload,
       };
     case REGISTER_SUCCESS:
       localStorage.setItem('token', payload.token);
@@ -88,6 +100,7 @@ export default function (state = initialState, action) {
         student: null,
         admin: null,
         teacher: null,
+        isTeacher: false,
       };
     case CHECK_ADMIN:
       return {
@@ -100,6 +113,12 @@ export default function (state = initialState, action) {
         ...state,
         admin: payload,
         isAuthenticated: true,
+      };
+    case TEACHER_LOGIN:
+      return {
+        ...state,
+        teacher: payload,
+        isTeacher: true,
       };
     case ADD_DEPARTMENT:
       return {
@@ -173,8 +192,9 @@ export default function (state = initialState, action) {
           ...state.adminData,
           students: payload.students,
           unverifiedStudents: payload.unverifiedStudents,
-          subjects:payload.subjects,
-          teachers: payload.teachers
+          subjects: payload.subjects,
+          teachers: payload.teachers,
+          assignments: payload.assignments,
         },
       };
     case VERIFY_STUDENT:

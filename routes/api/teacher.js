@@ -43,6 +43,7 @@ router.post(
       const teacherFields = {
         name: name,
         subject: subjects,
+        department:department,
         userID: userID,
         password: password
       };
@@ -117,7 +118,7 @@ router.post(
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
-          res.json({ token });
+          res.json({ token, teacher });
         }
       );
     } catch (err) {
@@ -129,4 +130,6 @@ router.post(
     }
   }
 );
+
+
 module.exports = router;

@@ -139,6 +139,28 @@ export const setAdminData = () => async (dispatch) => {
   }
 };
 
+export const setTeacherData = () => async (dispatch) => {
+  if(localStorage.token){
+    setAuthToken(localStorage.token);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    try {
+      const res = await axios.get('/api/data/teacher');
+      console.log(res)
+      dispatch({
+        type: SET_ADMIN_DATA,
+        payload: res.data,
+      });
+    } catch (err) {
+      console.log(err);
+      dispatch(setAlert(err.response.data.msg, 'danger'))
+    }
+  }
+};
+
 // Verify a student
 
 export const verifyStudent = (registrationNo, programme, sem, status) => async (dispatch) => {
@@ -182,6 +204,32 @@ export const addNewSubject = (name, programme, sem, lectures) => async (dispatch
     try {
       const res = await axios.post('/api/subject', body, config);
       dispatch(setDepartmentData());
+      dispatch(setAdminData());
+      console.log(res);
+      dispatch(setAlert(res.data.msg, 'success'))
+    } catch (err) {
+      console.log(err);
+      const errors = err.response.data.msg;
+      dispatch(setAlert("Request failed", 'danger'))
+    }
+  }
+};
+
+// Add new Teacher
+export const addNewTeacher = (data) => async (dispatch) => {
+  if(localStorage.adminToken){
+    setAuthToken(localStorage.adminToken);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    const body = JSON.stringify(data);
+    console.log(body);
+    try {
+      const res = await axios.post('/api/teacher', body, config);
+      dispatch(setDepartmentData());
+      dispatch(setAdminData());
       console.log(res);
       dispatch(setAlert(res.data.msg, 'success'))
     } catch (err) {

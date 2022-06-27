@@ -4,9 +4,11 @@ const Department = require('../../models/Department');
 const Class = require('../../models/Class');
 const Student = require('../../models/Student');
 const Subject = require('../../models/Subject');
+const Assignment = require('../../models/Assignment');
 const Teacher = require('../../models/Teacher');
 const { MongoServerError } = require('mongodb');
 const adminAuth = require('../../middleware/adminAuth');
+const teacherAuth = require('../../middleware/teacherAuth');
 
 // @route   GET api/data
 // @desc    Get department details
@@ -84,4 +86,39 @@ router.get('/admin', adminAuth, async (req, res) => {
   }
 });
 
+// @route   GET api/data/teacher
+// @desc    Get data for teacher
+// @access  Private
+router.get('/teacher', teacherAuth, async (req, res) => {
+  try {
+    let assignments = await Assignment.find({});
+    let subjects = await Subject.find({});
+    const students = [];
+    const unverifiedStudents = [];
+    let teachers = await Teacher.find({});
+    let student = {
+      name: '',
+      registrationNo: '',
+      rollNo: '',
+      programme: '',
+      sem: '',
+    };
+    const allStudents = await Student.find({});
+    allStudents.map(async (item) => {
+      student = {
+        name: item.name,
+        registrationNo: item.registrationNo,
+        rollNo: item.rollNo,
+        programme: item.programme,
+        sem: item.sem,
+      };
+      !item.verification && unverifiedStudents.push(student);
+      students.push(student);
+    });
+    res.status(200).json({ students, unverifiedStudents, subjects, teachers, assignments });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 module.exports = router;

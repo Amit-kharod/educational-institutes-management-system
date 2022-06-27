@@ -9,9 +9,12 @@ import {
   LOGOUT,
   CHECK_ADMIN,
   ADMIN_LOGIN,
+  TEACHER_LOGIN,
+  SET_ADMIN_DATA,
+  TEACHER_LOADED
 } from './types';
 import { setAlert } from './alert';
-import { setAdminData } from './data';
+import { setAdminData, setTeacherData } from './data';
 import setAuthToken from '../utils/setAuthToken';
 
 // Load Student
@@ -33,6 +36,25 @@ export const loadStudent = () => async (dispatch) => {
   }
 };
 
+// Load Teacher
+export const loadTeacher = () => async (dispatch) => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+    try {
+      const res = await axios.get('/api/auth/teacher');
+      console.log('hi');
+      dispatch({
+        type: TEACHER_LOADED,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: AUTH_ERROR,
+      });
+    }
+  }
+};
+
 // Register Student
 export const register =
   ({ name, email, registrationNo, rollNo, password, programme, sem }) =>
@@ -42,7 +64,15 @@ export const register =
         'Content-Type': 'application/json',
       },
     };
-    const body = JSON.stringify({ name, email, registrationNo, rollNo, password, programme, sem });
+    const body = JSON.stringify({
+      name,
+      email,
+      registrationNo,
+      rollNo,
+      password,
+      programme,
+      sem,
+    });
     try {
       const res = await axios.post('/api/students', body, config);
       dispatch({
@@ -63,32 +93,62 @@ export const register =
     }
   };
 
-// Login Student
-export const login = (registrationNo, password) => async (dispatch) => {
+// Login Student/Teacher
+export const login = (registrationNo, password, type) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
-  const body = JSON.stringify({ registrationNo, password });
-  try {
-    const res = await axios.post('/api/auth', body, config);
-    console.log(res.data);
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: res.data,
-    });
-    dispatch(loadStudent());
-  } catch (err) {
-    console.log(err);
-    const errors = err.response.data.errors;
 
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+  if (type) {
+    const body = JSON.stringify({ registrationNo, password });
+    try {
+      const res = await axios.post('/api/auth', body, config);
+      console.log(res.data);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      });
+      dispatch(loadStudent());
+    } catch (err) {
+      console.log(err);
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      }
+      dispatch({
+        type: LOGIN_FAILED,
+      });
     }
-    dispatch({
-      type: LOGIN_FAILED,
-    });
+  }
+  else {
+    const userID = registrationNo;
+    const body = JSON.stringify({ userID, password });
+    try {
+      const res = await axios.post('/api/teacher/login', body, config);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      });
+      dispatch({
+        type: TEACHER_LOGIN,
+        payload: res.data.teacher
+      });
+      dispatch(setTeacherData());
+      dispatch(loadTeacher());
+    } catch (err) {
+      console.log(err);
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      }
+      dispatch({
+        type: LOGIN_FAILED,
+      });
+    }
   }
 };
 
@@ -114,7 +174,7 @@ export const adminLogin = (id, password) => async (dispatch) => {
       type: ADMIN_LOGIN,
       payload: res.data,
     });
-    dispatch(setAdminData())
+    dispatch(setAdminData());
   } catch (err) {
     console.log(err);
     const errors = err.response.data.errors;
@@ -143,4 +203,3 @@ export const getIP = () => async (dispatch) => {
     payload: res2.data,
   });
 };
-

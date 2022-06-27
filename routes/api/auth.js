@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
+const teacherAuth = require('../../middleware/teacherAuth');
 const Student = require('../../models/Student');
+const Teacher = require('../../models/Teacher');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
@@ -15,6 +17,20 @@ router.get('/', auth, async (req, res) => {
   try {
     const student = await Student.findById(req.student.id).select('-password');
     res.json(student);
+  } catch (err) {
+    console.error(err.toString());
+    res.status(500).send('Server error');
+  }
+});
+
+
+// @route   GET api/auth
+// @desc    Get Students details using token
+// @access  Private
+router.get('/teacher', teacherAuth, async (req, res) => {
+  try {
+    const teacher = await Teacher.findById(req.teacher.id);
+    res.json(teacher);
   } catch (err) {
     console.error(err.toString());
     res.status(500).send('Server error');

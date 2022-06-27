@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
 const Navbar = ({
-  auth: { isAuthenticated, loading, isAdmin, student, admin },
+  auth: { isAuthenticated, loading, isAdmin, student, admin, isTeacher },
   logout,
 }) => {
   const studentLinks = (
@@ -41,7 +41,20 @@ const Navbar = ({
       </li>
     </Fragment>
   );
-
+  const teacherLinks = (
+    <Fragment>
+      <li id="admin-dashboard">
+        <Link className="text-link" to="/teacherDashboard">
+          Dashboard
+        </Link>
+      </li>
+      <li id="admin-logout">
+        <Link onClick={logout} className="text-link purple-btn" to="/">
+          Log Out
+        </Link>
+      </li>
+    </Fragment>
+  );
   const guestLinks = (
     <Fragment>
       <li id="home">
@@ -83,9 +96,11 @@ const Navbar = ({
             {isAuthenticated && student && studentLinks}
             {isAuthenticated && admin && adminLinks}
             {!isAuthenticated && guestLinks}
+            {isTeacher && teacherLinks}
           </Fragment>
         )}
       </ul>
+      
     </div>
   );
 };

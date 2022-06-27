@@ -8,7 +8,7 @@ import {
 } from '../../actions/data';
 import { toTitleCase, nToNth } from '../../utils/stringFunctions';
 import { setAlert } from '../../actions/alert';
-import { addNewSubject } from '../../actions/data';
+import { addNewSubject, addNewTeacher } from '../../actions/data';
 import PropTypes from 'prop-types';
 import LectureGrid from '../popup/LectureGrid';
 import SubjectList from '../popup/SubjectList';
@@ -26,8 +26,8 @@ const ManageDataPopups = ({
   resetDepartment,
   data,
   addNewSubject,
+  addNewTeacher,
 }) => {
-  const [subjectList, setSubjectList] = useState([]);
   const { isDepartmentAdded, currentDepartment } = adminData;
   const { department, programme, sem, subject, teacher } =
     currentModificationState;
@@ -121,10 +121,34 @@ const ManageDataPopups = ({
     }
   };
 
-  const validateTeacher = ()=> {
-    let element = document.getElementsByClassName('subject-checkbox')[0];
-    console.log(document.getElementsByClassName('subject-checkbox')[0])
-  }
+  const validateTeacher = () => {
+    const isTeacherValid = /^[a-z A-Z]+$/.test(teacher);
+    if (isTeacherValid) {
+      let element = document.getElementsByClassName('subject-checkbox');
+      var arr = [...element];
+      let newTeacher = {
+        name: teacher.toLowerCase(),
+        department: department.toLowerCase(),
+        subjects: [],
+      };
+      arr.map((item) => {
+        if (item.checked) {
+          newTeacher = {
+            ...newTeacher,
+            subjects: [
+              ...newTeacher.subjects,
+              { name: item.value, programme: item.id, sem: item.name },
+            ],
+          };
+        }
+      });
+      addNewTeacher(newTeacher);
+      setPopup('editDepartment');
+      setPopupStage(0);
+    } else {
+      setAlert('Enter a valid teacher name', 'danger');
+    }
+  };
   const addSubject = (allLectures) => {
     let lectures = { lectures: {} };
     for (const item in allLectures) {
@@ -139,6 +163,23 @@ const ManageDataPopups = ({
     addNewSubject(subject, programme, sem.charAt(0), lectures);
     setPopup(popupStages[popupStage]);
     setPopupStage(0);
+  };
+
+  const loginDetailsToggle = (e) => {
+    let element;
+    if (e.target.parentNode.className === 'action img-action') {
+      element = e.target.parentNode.parentNode.childNodes[2];
+    } else {
+      element = e.target.parentNode.childNodes[2];
+    }
+    if(element.className === 'hide'){
+      console.log("dfdf")
+      element.className = '';
+    }
+    else {
+      console.log("dfvcvcvdf")
+      element.className = 'hide';
+    }
   };
   // Fetch programmes details from department and render them
   const programmeActionElement = data.map((item, i) => {
@@ -300,7 +341,26 @@ const ManageDataPopups = ({
             <div id="teacher-heading" className="heading-red-small">
               Teachers
             </div>
-            {!isTeacher ? <em>no teachers to show</em> : <div>dfdf</div>}
+            {department && adminData.teachers.map((item,i) => {
+              if (department.toLowerCase() === item.department) {
+                return (
+                  <div key={i} className="flex">
+                    <div>{toTitleCase(item.name)}</div>
+                    <span
+                      className="action img-action"
+                      onClick={(e) => loginDetailsToggle(e)}
+                    >
+                      <img src="./img/icons/eye.png" alt="" />
+                      Login Details
+                    </span>
+                    <div id="login-details" className="hide">
+                      Id: {item.userID} Pass: {item.password}
+                    </div>
+                  </div>
+                );
+              }
+            })}
+            <br />
             <button
               className="medium-blue-btn edit"
               onClick={() => {
@@ -484,9 +544,7 @@ const ManageDataPopups = ({
         <button className="popup-close" onClick={() => setPopup(null)}>
           <img src="./img/icons/close.png" alt="close" />
         </button>
-        <strong>Teachers</strong>
-        <em>No teachers to show</em>
-        <br />
+
         <strong>New Teacher</strong>
         <div className="teacher-name">
           <label>Name</label>
@@ -508,14 +566,15 @@ const ManageDataPopups = ({
         <strong>Choose Subjects</strong>
         {adminData.subjects.map((item, i) => {
           return (
-            <div key={i} className="subject-checkbox">
+            <div key={i}>
               <input
+                className="subject-checkbox"
                 type="checkbox"
                 id={item.programme}
                 name={item.sem}
                 value={item.name}
               />
-              <label for={`subject${i}`}>{toTitleCase(item.name)}</label>
+              <label htmlFor={`subject${i}`}>{toTitleCase(item.name)}</label>
             </div>
           );
         })}
@@ -571,6 +630,7 @@ ManageDataPopups.propTypes = {
   adminData: PropTypes.object,
   data: PropTypes.array.isRequired,
   addNewSubject: PropTypes.func.isRequired,
+  addNewTeacher: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -585,4 +645,5 @@ export default connect(mapStateToProps, {
   setAlert,
   changeCurrentDepartment,
   addNewSubject,
+  addNewTeacher,
 })(ManageDataPopups);
