@@ -32,6 +32,7 @@ const ManageDataPopups = ({
   const { department, programme, sem, subject, teacher } =
     currentModificationState;
   let containProgramme = false;
+  let unoccupiedSubjects = [];
   let popup = <Fragment></Fragment>;
   const [departmentData, setDepartmentData] = useState({
     name: '',
@@ -172,12 +173,11 @@ const ManageDataPopups = ({
     } else {
       element = e.target.parentNode.childNodes[2];
     }
-    if(element.className === 'hide'){
-      console.log("dfdf")
+    if (element.className === 'hide') {
+      console.log('dfdf');
       element.className = '';
-    }
-    else {
-      console.log("dfvcvcvdf")
+    } else {
+      console.log('dfvcvcvdf');
       element.className = 'hide';
     }
   };
@@ -341,28 +341,29 @@ const ManageDataPopups = ({
             <div id="teacher-heading" className="heading-red-small">
               Teachers
             </div>
-            {department && adminData.teachers.map((item,i) => {
-              if (department.toLowerCase() === item.department) {
-                return (
-                  <div key={i} className="flex">
-                    <div>{toTitleCase(item.name)}</div>
-                    <span
-                      className="action img-action"
-                      onClick={(e) => loginDetailsToggle(e)}
-                    >
-                      <img src="./img/icons/eye.png" alt="" />
-                      Login Details
-                    </span>
-                    <div id="login-details" className="hide">
-                      Id: {item.userID} Pass: {item.password}
+            {department &&
+              adminData.teachers.map((item, i) => {
+                if (department.toLowerCase() === item.department) {
+                  return (
+                    <div key={i} className="flex">
+                      <div>{toTitleCase(item.name)}</div>
+                      <span
+                        className="action img-action"
+                        onClick={(e) => loginDetailsToggle(e)}
+                      >
+                        <img src="./img/icons/eye.png" alt="" />
+                        Login Details
+                      </span>
+                      <div id="login-details" className="hide">
+                        Id: {item.userID} Pass: {item.password}
+                      </div>
                     </div>
-                  </div>
-                );
-              }
-            })}
+                  );
+                }
+              })}
             <br />
             <button
-              className="medium-blue-btn edit"
+              className="medium-blue-btn edit2"
               onClick={() => {
                 setPopupStage(6);
                 setPopup('teacher');
@@ -544,7 +545,6 @@ const ManageDataPopups = ({
         <button className="popup-close" onClick={() => setPopup(null)}>
           <img src="./img/icons/close.png" alt="close" />
         </button>
-
         <strong>New Teacher</strong>
         <div className="teacher-name">
           <label>Name</label>
@@ -565,19 +565,25 @@ const ManageDataPopups = ({
         <br />
         <strong>Choose Subjects</strong>
         {adminData.subjects.map((item, i) => {
-          return (
-            <div key={i}>
-              <input
-                className="subject-checkbox"
-                type="checkbox"
-                id={item.programme}
-                name={item.sem}
-                value={item.name}
-              />
-              <label htmlFor={`subject${i}`}>{toTitleCase(item.name)}</label>
-            </div>
-          );
+          if (!item.isOccupied) {
+            unoccupiedSubjects.push(item);
+            return (
+              <div key={i}>
+                <input
+                  className="subject-checkbox"
+                  type="checkbox"
+                  id={item.programme}
+                  name={item.sem}
+                  value={item.name}
+                />
+                <label htmlFor={`subject${i}`}>{toTitleCase(item.name)}</label>
+              </div>
+            );
+          }
         })}
+        {
+          !unoccupiedSubjects[0] && <span>No subjects to choose from</span>
+        }
         <button className="next-popup" onClick={validateTeacher}>
           Add
         </button>

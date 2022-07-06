@@ -32,9 +32,9 @@ const HomePage = ({ admin, isAdmin }) => {
       <div id="key-features">
         <div className="big-heading-white">Key Features</div>
         <ul id="features">
-          <li className="feature"><span>&#11044;</span> Attendence Record</li>
-          <li className="feature"><span>&#11044;</span> Assignment and Test Management</li>
           <li className="feature"><span>&#11044;</span> University Data Management</li>
+          <li className="feature"><span>&#11044;</span> Teachers Management</li>
+          <li className="feature"><span>&#11044;</span> Assignment Management</li>
           <li className="feature"><span>&#11044;</span> Student Verification</li>
         </ul>
       </div>

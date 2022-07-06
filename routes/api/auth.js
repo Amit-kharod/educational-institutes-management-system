@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth');
 const teacherAuth = require('../../middleware/teacherAuth');
 const Student = require('../../models/Student');
 const Teacher = require('../../models/Teacher');
+const Assignment = require('../../models/Assignment');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
@@ -15,8 +16,10 @@ const { MongoServerError } = require('mongodb');
 // @access  Private
 router.get('/', auth, async (req, res) => {
   try {
-    const student = await Student.findById(req.student.id).select('-password');
-    res.json(student);
+    let assignments = await Assignment.find({});
+    let student = await Student.findById(req.student.id).select('-password');
+    // student = {...student, assignments: assignments}
+    return res.json({student, assignments});
   } catch (err) {
     console.error(err.toString());
     res.status(500).send('Server error');

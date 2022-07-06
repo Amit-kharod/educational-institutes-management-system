@@ -15,9 +15,10 @@ import {
   ADD_DEPARTMENT_SUCCESS,
   SET_DEPARTMENT_DATA,
   SET_ADMIN_DATA,
-  VERIFY_STUDENT
+  VERIFY_STUDENT,
 } from './types';
 import { setAlert } from './alert';
+import { loadTeacher } from './auth';
 import setAuthToken from '../utils/setAuthToken';
 
 // Add new department
@@ -235,7 +236,32 @@ export const addNewTeacher = (data) => async (dispatch) => {
     } catch (err) {
       console.log(err);
       const errors = err.response.data.msg;
-      dispatch(setAlert("Request failed", 'danger'))
+      dispatch(setAlert(errors, 'danger'))
+    }
+  }
+};
+
+// Add new Assignment
+export const addAssignment = (name, subject, programme, sem, isHardCopy, topics, date) => async (dispatch) => {
+  if(localStorage.token){
+    setAuthToken(localStorage.token);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    const body = JSON.stringify({ name, subject, programme, sem, isHardCopy, topics, date });
+    try {
+      const res = await axios.post('/api/assignment', body, config);
+      dispatch(setDepartmentData());
+      dispatch(setAdminData());
+      console.log(res);
+      dispatch(setAlert(res.data.msg, 'success'))
+      dispatch(loadTeacher());
+    } catch (err) {
+      console.log(err);
+      const errors = err.response.data.msg;
+      dispatch(setAlert(errors, 'danger'))
     }
   }
 };

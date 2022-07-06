@@ -10,11 +10,8 @@ const Navbar = ({
 }) => {
   const studentLinks = (
     <Fragment>
-      <li id="st-dashboard">Dashboard</li>
-      <li id="leaderboard">LeaderBoard</li>
-      <li id="students">Poll</li>
-      <li id="profile">Profile</li>
-      <li id="logout">
+      <li id="st-dashboard" className='nav-link margin-left'>Dashboard</li>
+      <li id="admin-logout">
         <Link onClick={logout} className="text-link purple-btn" to="/">
           Log Out
         </Link>
@@ -24,12 +21,12 @@ const Navbar = ({
 
   const adminLinks = (
     <Fragment>
-      <li id="admin-dashboard">
+      <li id="admin-dashboard" className='nav-link margin-left'>
         <Link className="text-link" to="/adminDashboard">
           Dashboard
         </Link>
       </li>
-      <li id="departments">
+      <li id="departments" className='nav-link'>
         <Link className="text-link" to="/departments">
           Departments
         </Link>
@@ -43,7 +40,7 @@ const Navbar = ({
   );
   const teacherLinks = (
     <Fragment>
-      <li id="admin-dashboard">
+      <li id="admin-dashboard" className='nav-link margin-left'>
         <Link className="text-link" to="/teacherDashboard">
           Dashboard
         </Link>
@@ -57,18 +54,18 @@ const Navbar = ({
   );
   const guestLinks = (
     <Fragment>
-      <li id="home">
+      <li id="home" className='nav-link margin-left'>
         <Link className="text-link" to="/">
           Home
         </Link>
       </li>
-      <li id="about">
+      <li id="about" className='nav-link'>
         <Link className="text-link" to="/about">
           About
         </Link>
       </li>
       {isAdmin && (
-        <li id="admin">
+        <li id="admin" className='nav-link'>
           <Link className="text-link" to="/admin">
             Admin
           </Link>
@@ -90,7 +87,7 @@ const Navbar = ({
 
   return (
     <div id="nav">
-      <ul id="nav-items">
+      <div id="nav-items">
         {!loading && (
           <Fragment>
             {isAuthenticated && student && studentLinks}
@@ -99,7 +96,7 @@ const Navbar = ({
             {isTeacher && teacherLinks}
           </Fragment>
         )}
-      </ul>
+      </div>
       
     </div>
   );

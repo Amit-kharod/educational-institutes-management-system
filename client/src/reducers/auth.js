@@ -32,6 +32,7 @@ const initialState = {
   isAuthenticated: null,
   loading: false,
   student: null,
+  assignments:null,
   teacher: null,
   admin: null,
   firstLogin: false,
@@ -52,12 +53,12 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case STUDENT_LOADED:
-      console.log(payload);
       return {
         ...state,
         isAuthenticated: true,
         loading: false,
-        student: payload,
+        student: payload.student,
+        assignments: payload.assignments
       };
     case TEACHER_LOADED:
       console.log(payload)

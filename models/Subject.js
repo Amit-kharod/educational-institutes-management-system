@@ -16,6 +16,10 @@ const SubjectSchema = mongoose.Schema({
   lecture: {
     type: Object,
     required: true,
+  },
+  isOccupied: {
+    type: Boolean,
+    required: true,
   }
 });
 

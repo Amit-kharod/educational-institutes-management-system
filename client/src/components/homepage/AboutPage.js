@@ -22,14 +22,22 @@ const AboutPage = () => {
           </span>
         </div>
         <div id="links" className="img-link">
-          <div id="imp-link" className="heading-red">Important Links</div>
-          <div id="github">
-            <img src="./img/icons/GITHUB.png" alt="github" />
-            <span className="text">Github</span>
+          <div id="imp-link" className="heading-red">
+            Important Links
           </div>
+          <a
+            href="https://github.com/Amit-kharod/educational-institutes-management-system"
+            target="_blank"
+          >
+            <div id="github">
+              <img src="./img/icons/GITHUB.png" alt="github" />
+              <span className="text">Github</span>
+            </div>
+          </a>
+
           <div id="youtube">
             <img src="./img/homepage/youtube.png" alt="github" />
-            <span className="text">Project Summary</span>
+            <span className="text">Coming Soon...</span>
           </div>
         </div>
       </div>

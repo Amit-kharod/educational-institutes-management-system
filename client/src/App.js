@@ -28,8 +28,8 @@ const App = () => {
   const [state, setState] = useState(null);
   console.log(state);
   useEffect(() => {
-    store.dispatch(loadStudent());
-    store.dispatch(loadTeacher());
+    auth.student && store.dispatch(loadStudent());
+    auth.teacher && store.dispatch(loadTeacher());
     store.dispatch(setDepartmentData());
     auth.isAdmin && store.dispatch(setAdminData());
   }, []);

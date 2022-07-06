@@ -18,7 +18,7 @@ router.post(
     check('sem', 'Semester is required').not().isEmpty().isNumeric(),
     check('isHardCopy', 'Type is required').not().isEmpty().isBoolean(),
     check('topics', 'Topics are required').not().isEmpty().isString(),
-    check('date', 'Date is required').not().isEmpty().isObject(),
+    check('date', 'Date is required').not().isEmpty().isString(),
   ],
   async (req, res) => {
     try {

@@ -2,6 +2,11 @@
 #nav-items {
   display: flex;
   list-style: none;
+  background-color: #2e3d57;
+  width: 100vw;
+  margin: none;
+  height: 50px;
+  align-items: center;
 }
 #nav-items * {
   cursor: pointer;
@@ -44,6 +49,7 @@
 }
 #admin-logout {
   margin-left: auto;
+  margin-right: 10px;
 }
 /* Alerts */
 #alerts {
@@ -74,13 +80,14 @@
 .alert-success {
   background-color: #4fc255;
 }
-.lecture-flex{
+.lecture-flex {
   display: flex;
-  width: 500px;
+  max-width: 50vw;
   justify-content: flex-start;
+  font-size: 1.3em;
 }
-.lecture-flex *{
-margin-right: 50px;
+.lecture-flex * {
+  margin-right: 50px;
 }
 /* Popup */
 .popup {
@@ -237,6 +244,9 @@ margin-right: 50px;
   align-self: center;
   justify-self: center;
 }
+a {
+  text-decoration: none;
+}
 #github,
 #youtube {
   display: flex;
@@ -336,7 +346,7 @@ margin-right: 50px;
 .verification-grid {
   display: grid;
   width: 500px;
-  grid-template-columns:repeat(5, 1fr);
+  grid-template-columns: repeat(5, 1fr);
 }
 
 /* Departments Page */
@@ -555,6 +565,11 @@ margin-right: 50px;
 #teacher-heading {
   margin-top: 20px;
 }
+#teacher-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 /* Subject Popup */
 .week {
   background-color: #777;
@@ -591,7 +606,7 @@ margin-right: 50px;
 .lecture-active > button {
   background-color: #d5772a;
 }
-#subjectName span{
+#subjectName span {
   font-size: 0.8em;
   margin-right: 10px;
 }
@@ -606,6 +621,44 @@ margin-right: 50px;
 }
 .input-medium::placeholder {
   font-size: 1.2em;
+}
+
+/* Student Dashboard */
+.assignment-grid {
+  display: grid;
+  grid-template-columns: repeat(3,auto);
+  width: 700px;
+}
+.grid-container{
+  width: 100vw;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+/* Teacher Popups */
+#assignment-name input {
+  width: 200px;
+}
+#assignment-topics input {
+  width: 200px;
+  height: 30px;
+}
+#hard-btn {
+  width: 100px !important;
+}
+.date input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  margin: 0px;
+  margin-right: 10px !important;
+  transform: scale(1.6);
+}
+.assignment {
+  display: flex;
+  width: 300px;
+  font-size: medium;
+  justify-content: space-around;
 }
 /* common styles */
 .big-blue-btn,
@@ -662,19 +715,19 @@ margin-right: 50px;
 .inline-link > span:active {
   color: rgb(255, 255, 255);
 }
-.flex{
-  display:flex;
+.flex {
+  display: flex;
   width: 400px;
   justify-content: space-around;
 }
-.hide{
+.hide {
   display: none;
 }
 #teacher-heading {
   text-align: center;
 }
-#login-details{
-font-size: medium;
+#login-details {
+  font-size: medium;
 }
 .purple-btn,
 .blue-btn {
@@ -768,6 +821,17 @@ font-size: medium;
 .edit img {
   width: 40px;
 }
+.edit2 {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.edit2 img {
+  width: 40px;
+}
+
 .action {
   color: #f5f191;
   font-weight: 600;
@@ -785,6 +849,22 @@ font-size: medium;
 .heading-margin {
   margin-top: 20px;
   margin-bottom: 5px;
+}
+.dashboard-heading {
+  max-width: 100vw;
+  display: flex;
+  justify-content: center;
+  font-size: 2em;
+  font-weight: bolder;
+}
+.font-yellow {
+  color: #f5f191;
+}
+.nav-link {
+  background-color: #2e3d57;
+}
+.margin-left {
+  margin-left: 10px;
 }
 /* Animations */
 @keyframes fadeIn {

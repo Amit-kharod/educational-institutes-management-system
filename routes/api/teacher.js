@@ -7,6 +7,7 @@ const adminAuth = require('../../middleware/adminAuth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { randomBytes } = require('crypto');
+const Subject = require('../../models/Subject');
 
 // @route   POST api/teacher
 // @desc    Add new teacher
@@ -32,11 +33,11 @@ router.post(
       let { name, department, subjects } = req.body;
       name = name.toLowerCase();
       department = department.toLowerCase();
-      // adding new subject
-      let teacher = await Teacher.findOne({ name: name });
-      if (teacher) {
-        return res.status(400).json({ msg: 'Teacher already exits' });
-      }
+      // adding new Teacher
+      // let teacher = await Teacher.findOne({ name: name });
+      // if (teacher) {
+      //   return res.status(400).json({ msg: 'Teacher already exits' });
+      // }
       // generating userID and password
       const userID = Math.round(Math.random() * (8999) + 1000);
       const password = randomBytes(2).toString('hex');
@@ -47,18 +48,24 @@ router.post(
         userID: userID,
         password: password
       };
-      teacher = new Teacher(teacherFields);
+      let teacher = new Teacher(teacherFields);
       let findDepartment = await Department.findOne({
         name: department,
       });
       if (findDepartment) {
-        findDepartment.teacher.push(name);
-        newDepartment = new Department(findDepartment);
+          findDepartment.teacher.push(name);
+          newDepartment = new Department(findDepartment);
       } else {
         return res.status(400).json({ msg: 'Department is invalid' });
       }
       await teacher.save();
       await newDepartment.save();
+      subjects.map(async(item) => {
+        const subject = await Subject.findOne({name: item.name, programme: item.programme, sem:item.sem});
+        subject.isOccupied = true;
+        const newSubject = new Subject(subject);
+        await newSubject.save();
+      })
       res.status(200).json({ msg: 'Teacher added' });
     } catch (err) {
       console.error(err);

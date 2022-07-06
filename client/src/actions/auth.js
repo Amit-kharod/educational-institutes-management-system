@@ -11,7 +11,7 @@ import {
   ADMIN_LOGIN,
   TEACHER_LOGIN,
   SET_ADMIN_DATA,
-  TEACHER_LOADED
+  TEACHER_LOADED,
 } from './types';
 import { setAlert } from './alert';
 import { setAdminData, setTeacherData } from './data';
@@ -41,12 +41,13 @@ export const loadTeacher = () => async (dispatch) => {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
     try {
+      console.log('teacher');
       const res = await axios.get('/api/auth/teacher');
-      console.log('hi');
       dispatch({
         type: TEACHER_LOADED,
         payload: res.data,
       });
+      dispatch(setTeacherData());
     } catch (err) {
       dispatch({
         type: AUTH_ERROR,

@@ -18,7 +18,7 @@ const AssignmentSchema = mongoose.Schema({
     required: true,
   },
   date: {
-    type: Object,
+    type: String,
     required: true,
   },
   isHardCopy: {
